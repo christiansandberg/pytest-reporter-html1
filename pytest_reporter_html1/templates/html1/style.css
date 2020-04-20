@@ -1,0 +1,65 @@
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.status {
+    font-size: 75%;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+}
+
+.letters {font-family: monospace;}
+.letters .passed {color: green;}
+.letters .failed {color: red;}
+.letters .error {color: red;}
+
+.passed .status {background-color: green;}
+.failed .status {background-color: red;}
+.error .status {background-color: red;}
+
+ul, ol {
+    list-style-type: none;
+    padding: 0;
+}
+
+pre {
+    background-color: rgb(240, 240, 240);
+    padding: 0.7em;
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 3px;
+}
+
+li {
+    margin-top: 0.6rem;
+    padding: 0.7rem;
+    padding-right: 0.2rem;
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 3px;
+}
+
+.test-runs {
+    padding: 0.5rem 0;
+}
+
+.test-phases {
+    padding: 0.5rem 0 0.5rem 0rem;
+}
+
+.duration {
+    float: right;
+    font-size: 85%;
+    font-weight: normal;
+    color: rgb(112, 112, 112);
+}
+
+/* .test-phases {display: none;} */

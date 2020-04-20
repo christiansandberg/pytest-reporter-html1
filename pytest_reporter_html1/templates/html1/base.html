@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Test Report{% endblock %}</title>
+    <style type="text/css">
+{% filter css_minify %}
+{% block style %}
+{{ ansi_get_styles(dark_bg=False)|join|safe }}
+{% include "html1/style.css" %}
+{% endblock %}
+{% endfilter %}
+
+    </style>
+    {% endblock %}
+</head>
+<body>
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% block content %}{% endblock %}
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+</body>
+</html>
