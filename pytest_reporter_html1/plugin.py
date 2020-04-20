@@ -36,6 +36,7 @@ def pytest_reporter_modify_env(env):
     env.filters["strftime"] = lambda ts, fmt: datetime.fromtimestamp(ts).strftime(fmt)
     env.filters["ansi"] = ansi
     env.filters["css_minify"] = partial(re.sub, r"\s+", " ")
+    env.filters["html_minify"] = partial(re.sub, r">\s+<", "> <")
 
 
 def pytest_reporter_context():

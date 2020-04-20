@@ -64,7 +64,7 @@
                         <li>
                           <div class="title">{{ section }}</div>
                           <div class="content">
-                            <pre>{{ content|ansi|safe }}</pre>
+                            <pre>{{ content|escape|ansi|safe }}</pre>
                           </div>
                         </li>
                         {% endfor %}
