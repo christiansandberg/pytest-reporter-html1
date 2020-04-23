@@ -63,7 +63,7 @@
                       {% set ns.used_sections = ns.used_sections + [section] %}
                       <div class="section">
                         <div class="section-title">{{ section }}</div>
-                        <pre>{{ content|escape|ansi|safe }}</pre>
+                        <pre>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</pre>
                       </div>
                       {% endfor %}
                     </div>
