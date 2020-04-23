@@ -1,18 +1,18 @@
 {% extends "html1/base.html" %}
 {% block header %}
-  <h1>Test Report</h1>
+<h1>Test Report</h1>
 {% endblock %}
 {% block content %}
 <div class="container">
   <ol class="test-files">
     {% for fspath, tests in test_runs|groupby('item.fspath') %}
-    <li>
+    <li class="collapsable">
       <div class="title">
         <span class="fspath">{{ fspath|replace(config.rootdir, '') }}</span>
         <span class="letters">
         {% for test in tests -%}
-          {% for phase in test.phases if phase.letter -%}
-            <span class="{{ phase.category }}">{{ phase.letter }}</span>
+          {% for phase in test.phases if phase.status.letter -%}
+            <span class="{{ phase.status.category }}">{{ phase.status.letter }}</span>
           {%- endfor %}
         {%- endfor %}
         </span>
@@ -20,55 +20,52 @@
       <div class="content">
         <ol class="test-runs">
           {% for test in tests %}
-          <li class="{{ test.category }}">
+          <li class="collapsable {{ test.status.category }}">
             <div class="title">
-              <span class="status">{{ test.word }}</span>
+              <span class="status">{{ test.status.word }}</span>
               <span class="test-name">{{ test.item.name }}</span>
-              <span class="duration">{{ test.phases|sum('report.duration')|round(1) }} s</span>
+              <span class="duration">{{ test.phases|sum('report.duration')|timedelta }}</span>
             </div>
             <div class="content">
               <ol class="test-phases">
                 {% set ns = namespace(used_sections=[]) %}
+                <pre>{{ test.phases|pprint }}</pre>
                 {% for phase in test.phases %}
-                  {% set sections = phase.report.sections|rejectattr(0, "in", ns.used_sections)|list %}
+                  {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
                   {% if sections %}
-                  <li class="{{ phase.report.when }} {{ phase.category }}">
+                  <li class="collapsable {{ phase.report.when }} {{ phase.status.category }}">
                     <div class="title">
-                      {% if phase.word %}
-                        <span class="status">{{ phase.word }}</span>
+                      {% if phase.status.word %}
+                      <span class="status">{{ phase.status.word }}</span>
                       {% endif %}
                       <span class="phase-name">{{ phase.report.when|title }}</span>
-                      <span class="duration">{{ phase.report.duration|round(1) }} s</span>
+                      <span class="duration">{{ phase.report.duration|timedelta }} s</span>
                     </div>
                     <div class="content">
                       {% if phase.report.longrepr %}
-                        <div class="repr">
-                          <pre>{{ phase.report.longrepr }}</pre>
-                        </div>
+                      <div class="repr">
+                        <pre>{{ phase.report.longrepr }}</pre>
+                      </div>
                       {% endif %}
-                      <ul class="sections">
-                        {#
-                        <li>
-                          <div class="title">Captured log {{ phase.report.when }}</div>
-                          <div class="content">
-                            <ol>
-                              {% for record in phase.log_records %}
-                                <li>{{ record.message }}</li>
-                              {% endfor %}
-                            </ol>
-                          </div>
-                        </li>
-                        #}
-                        {% for section, content in sections %}
-                        {% set ns.used_sections = ns.used_sections + [section] %}
-                        <li>
-                          <div class="title">{{ section }}</div>
-                          <div class="content">
-                            <pre>{{ content|escape|ansi|safe }}</pre>
-                          </div>
-                        </li>
-                        {% endfor %}
-                      </ul>
+                      {#
+                      <li>
+                        <div class="title">Captured log {{ phase.report.when }}</div>
+                        <div class="content">
+                          <ol>
+                            {% for record in phase.log_records %}
+                              <li>{{ record.message }}</li>
+                            {% endfor %}
+                          </ol>
+                        </div>
+                      </li>
+                      #}
+                      {% for section, content in sections %}
+                      {% set ns.used_sections = ns.used_sections + [section] %}
+                      <div class="section">
+                        <div class="section-title">{{ section }}</div>
+                        <pre>{{ content|escape|ansi|safe }}</pre>
+                      </div>
+                      {% endfor %}
                     </div>
                   </li>
                   {% endif %}

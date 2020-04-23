@@ -9,11 +9,18 @@
     <style type="text/css">
 {% filter css_minify %}
 {% block style %}
-{{ ansi_get_styles(dark_bg=False)|join|safe }}
+{% if ansi_get_styles %}
+  {{ ansi_get_styles(dark_bg=False)|join|safe }}
+{% endif %}
 {% include "html1/style.css" %}
 {% endblock %}
 {% endfilter %}
     </style>
+    <script>
+{% block script %}
+{% include "html1/main.js" %}
+{% endblock %}
+    </script>
     {% endblock %}
 </head>
 <body>

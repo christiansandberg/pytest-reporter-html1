@@ -6,6 +6,11 @@ html {
 
 .title {
     font-weight: bold;
+    cursor: pointer;
+}
+
+.collapsed > .content {
+    display: none;
 }
 
 .status {
