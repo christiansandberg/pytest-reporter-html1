@@ -23,6 +23,9 @@ setup(
     description='A basic HTML report template for Pytest',
     long_description=read('README.rst'),
     packages=find_packages(),
+    package_data={
+        'pytest_reporter_html1': ['templates/html1/*'],
+    },
     python_requires='>=3.6',
     install_requires=[
         'pytest-reporter',
