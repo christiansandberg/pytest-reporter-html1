@@ -12,7 +12,7 @@
         <span class="letters">
         {% for test in tests -%}
           {% for phase in test.phases if phase.status.letter -%}
-            <span class="{{ phase.status.category }}">{{ phase.status.letter }}</span>
+            <span class="{{ phase.status.category }} {{ phase.status.style|join(' ') }}">{{ phase.status.letter }}</span>
           {%- endfor %}
         {%- endfor %}
         </span>
@@ -20,7 +20,7 @@
       <div class="content">
         <ol class="test-runs">
           {% for test in tests %}
-          <li class="collapsable {{ test.status.category }}">
+          <li class="collapsable {{ test.status.category }} {{ test.status.style|join(' ') }}">
             <div class="title">
               <span class="status">{{ test.status.word }}</span>
               <span class="test-name">{{ test.item.name }}</span>
@@ -29,17 +29,16 @@
             <div class="content">
               <ol class="test-phases">
                 {% set ns = namespace(used_sections=[]) %}
-                <pre>{{ test.phases|pprint }}</pre>
                 {% for phase in test.phases %}
                   {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
-                  {% if sections %}
+                  {% if sections or phase.report.longrepr %}
                   <li class="collapsable {{ phase.report.when }} {{ phase.status.category }}">
                     <div class="title">
                       {% if phase.status.word %}
                       <span class="status">{{ phase.status.word }}</span>
                       {% endif %}
                       <span class="phase-name">{{ phase.report.when|title }}</span>
-                      <span class="duration">{{ phase.report.duration|timedelta }} s</span>
+                      <span class="duration">{{ phase.report.duration|timedelta }}</span>
                     </div>
                     <div class="content">
                       {% if phase.report.longrepr %}

@@ -28,10 +28,16 @@ html {
 .letters .passed {color: green;}
 .letters .failed {color: red;}
 .letters .error {color: red;}
+.letters .xfailed {color: rgb(143, 143, 0);}
+.letters .xpassed {color: green;}
+.letters .yellow {color: rgb(143, 143, 0);}
 
 .passed .status {background-color: green;}
 .failed .status {background-color: red;}
 .error .status {background-color: red;}
+.xfailed .status {background-color: rgb(143, 143, 0);}
+.xpassed .status {background-color: green;}
+.yellow .status {background-color: rgb(143, 143, 0);}
 
 ul, ol {
     list-style-type: none;

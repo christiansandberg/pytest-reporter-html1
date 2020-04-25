@@ -4,13 +4,15 @@ from functools import partial
 import os.path
 
 import pytest
+
 try:
     from ansi2html import Ansi2HTMLConverter
     from ansi2html.style import get_styles
-    conv = Ansi2HTMLConverter(escaped=False)
 except ImportError:
     conv = None
     get_styles = None
+else:
+    conv = Ansi2HTMLConverter(escaped=False)
 
 
 def pytest_reporter_template_dir():
@@ -27,5 +29,5 @@ def pytest_reporter_modify_env(env):
     env.filters["html_minify"] = partial(re.sub, r">\s+<", "> <")
 
 
-def pytest_reporter_context():
-    return {"ansi_get_styles": get_styles}
+def pytest_reporter_context(context):
+    context["ansi_get_styles"] = get_styles
