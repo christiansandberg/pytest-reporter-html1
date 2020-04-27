@@ -88,7 +88,7 @@
                 <tr>
                   <td>Fixtures</td>
                   <td>
-                    {% for fixturename in test.item.fixturenames %}
+                    {% for fixturename in test.item.fixturenames if not fixturename.startswith('_') %}
                     <div class="badge fixturename">
                       {{ fixturename }}
                     </div>
