@@ -4,6 +4,24 @@
 {% endblock %}
 {% block content %}
 <div class="container">
+  {% if config._metadata %}
+  <table class="metadata">
+    {% for key, value in config._metadata.items() %}
+    <tr>
+      <td>{{ key }}</td>
+      <td>
+        {% if value is mapping %}
+          {% for key, value in value.items() %}
+            {{ key }}: {{ value }}<br/>
+          {% endfor %}
+        {% else %}
+          {{ value }}
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
   <ol class="test-files">
     {% for fspath, tests in test_runs|groupby('item.fspath') %}
     <li class="collapsable">
@@ -22,23 +40,72 @@
           {% for test in tests %}
           <li class="collapsable {{ test.status.category }} {{ test.status.style|join(' ') }}">
             <div class="title">
-              <span class="status">{{ test.status.word }}</span>
+              <span class="status badge">{{ test.status.word }}</span>
               <span class="test-name">{{ test.item.name }}</span>
               <span class="duration">{{ test.phases|sum('report.duration')|timedelta }}</span>
             </div>
             <div class="content">
+              {% if test.item.function.__doc__ %}
+              {% set parts = test.item.function.__doc__|cleandoc|rst2html %}
+              {{ parts['html_body']|safe }}
+              {% endif %}
+              <table class="metadata">
+                <tr>
+                  <td>Started</td>
+                  <td>{{ test.phases|map(attribute='call.start')|first|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                <tr>
+                  <td>Ended</td>
+                  <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                <tr>
+                  <td>Duration</td>
+                  <td>{{ test.phases|map(attribute='report.duration')|sum|timedelta }}</td>
+                </tr>
+                {% set markers = test.item.iter_markers()|list %}
+                {% if markers %}
+                <tr>
+                  <td>Markers</td>
+                  <td>
+                    {% for marker in markers %}
+                    <div class="marker">
+                      <span class="marker-name badge">{{ marker.name }}</span>
+                      <span class="marker-args">
+                        {% for value in marker.args %}
+                        {{ value.__repr__() }}
+                        {% endfor %}
+
+                        {% for key, value in marker.kwargs.items() %}
+                        {{ key }}={{ value.__repr__() }}
+                        {% endfor %}
+                      </span>
+                    </div>
+                    {% endfor %}
+                  </td>
+                </tr>
+                {% endif %}
+                {% if test.item.fixturenames %}
+                <tr>
+                  <td>Fixtures</td>
+                  <td>
+                    {% for fixturename in test.item.fixturenames %}
+                    <div class="badge fixturename">
+                      {{ fixturename }}
+                    </div>
+                    {% endfor %}
+                  </td>
+                </tr>
+                {% endif %}
+              </table>
               <ol class="test-phases">
                 {% set ns = namespace(used_sections=[]) %}
                 {% for phase in test.phases %}
                   {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
-                  {% if sections or phase.report.longrepr %}
-                  <li class="collapsable {{ phase.report.when }} {{ phase.status.category }}">
+                  <li class="collapsable {{ phase.report.when }} {{ phase.status.category }} {{ phase.status.style|join(' ') }}">
                     <div class="title">
-                      {% if phase.status.word %}
-                      <span class="status">{{ phase.status.word }}</span>
-                      {% endif %}
-                      <span class="phase-name">{{ phase.report.when|title }}</span>
-                      <span class="duration">{{ phase.report.duration|timedelta }}</span>
+                      <div class="status"><!--{{ phase.status.letter }}--></div>
+                      <div class="phase-name">{{ phase.report.when|title }}</div>
+                      <!--<span class="duration">{{ phase.report.duration|timedelta }}</span>-->
                     </div>
                     <div class="content">
                       {% if phase.report.longrepr %}
@@ -67,7 +134,6 @@
                       {% endfor %}
                     </div>
                   </li>
-                  {% endif %}
                 {% endfor %}
               </ol>
             </div>
@@ -105,8 +171,10 @@
     </li>
     {% endfor %}
   </ol>
+  <!--
   <div>
     <pre><code>{% debug %}</code></pre>
   </div>
+  -->
 </div>
 {% endblock %}

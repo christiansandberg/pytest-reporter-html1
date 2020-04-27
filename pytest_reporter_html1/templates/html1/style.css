@@ -4,68 +4,167 @@ html {
     font-size: 14px;
 }
 
+body {
+    padding: 0;
+    margin: 0;
+    background-color: rgb(240, 240, 240);
+    color: #333333;
+}
+
+header {
+    background-color: #78909C;
+    color: white;
+    padding: 2rem;
+}
+
+h1 {
+    margin: 0;
+}
+
+.container {
+    margin: 1.5rem;
+}
+
 .title {
     font-weight: bold;
     cursor: pointer;
+    padding: 0.5rem;
+}
+
+.content {
+    margin-top: 0.7rem;
+    padding: 0 0.5rem;
+}
+
+.metadata td:first-child {
+    font-weight: bold;
+    padding-right: 2em;
+}
+
+.metadata td {
+    padding: 0.2rem;
+    vertical-align: top;
 }
 
 .collapsed > .content {
     display: none;
 }
 
-.status {
-    font-size: 75%;
-    font-weight: bold;
+.badge {
+    font-size: 85%;
     text-align: center;
+    background-color: #78909C;
     color: white;
     display: inline-block;
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    margin-right: 0.5rem;
+    padding: 0.2em 0.75em;
+    border-radius: 4px;
+    margin-right: 0.4rem;
 }
 
-.letters {font-family: monospace;}
-.letters .passed {color: green;}
-.letters .failed {color: red;}
-.letters .error {color: red;}
-.letters .xfailed {color: rgb(143, 143, 0);}
-.letters .xpassed {color: green;}
-.letters .yellow {color: rgb(143, 143, 0);}
+.status {
+    width: 4.5em;
+    font-weight: bold;
+}
 
-.passed .status {background-color: green;}
-.failed .status {background-color: red;}
-.error .status {background-color: red;}
-.xfailed .status {background-color: rgb(143, 143, 0);}
-.xpassed .status {background-color: green;}
-.yellow .status {background-color: rgb(143, 143, 0);}
+.letters {
+    margin-left: 1rem;
+    font-family: monospace;
+}
+.letters .passed {color: green;}
+.letters .failed, .letters .error {color: red;}
+.letters .xfailed, .letters .xpassed, .letters .yellow {
+    color: rgb(143, 143, 0);
+}
+
+.passed > .title > .status {
+    background-color: #43A047;
+    color: white;
+}
+.failed > .title > .status, .error > .title > .status {
+    background-color: #E53935;
+    color: white;
+}
+.xfailed > .title > .status, .xpassed > .title > .status, .yellow > .title > .status {
+    background-color: #FDD835;
+    color: black;
+}
 
 ul, ol {
     list-style-type: none;
     padding: 0;
 }
 
+li {
+    margin-bottom: 0.5rem;
+    padding: 0.1rem 0rem;
+    /* border: 1px solid rgb(199, 199, 199); */
+    border-radius: 4px;
+}
+
 pre {
     background-color: rgb(240, 240, 240);
-    font-size: 12px;
+    white-space: pre-wrap;
+    font-size: 85%;
     padding: 0.7em;
     border: 1px solid rgb(199, 199, 199);
     border-radius: 3px;
     margin-top: 0.2rem;
 }
 
-li {
-    margin-top: 0.6rem;
-    padding: 0.5rem 0.2rem 0.5rem 1rem;
-    border: 1px solid rgb(199, 199, 199);
-    border-radius: 3px;
+.test-files > li > .title {
+    font-size: 120%;
+    padding: 0.3em 0.5em;
+    border-radius: 4px;
+    /* border-bottom: 1px solid rgb(173, 173, 173); */
+    background-color: white;
+    box-shadow: 0 1px 4px #9b9b9b;
+}
+
+.test-files > li > .content {
+    /* margin-top: -0.2rem; */
+    /* padding: 0.8rem; */
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+    /* background-color: rgb(231, 231, 231); */
+    border-radius: 4px;
+    /* box-shadow: 0 1px 3px #999999 inset; */
 }
 
 .test-runs {
+    margin-top: -0.5rem;
     padding: 0.5rem 0;
 }
 
-.test-phases {
-    padding: 0.5rem 0 0.5rem 0rem;
+.test-runs > li {
+    background-color: white;
+    box-shadow: 0 1px 2px #afafaf;
+}
+
+.test-phases > li {
+    position: relative;
+    border-left: 1px solid #b1b1b1;
+    margin-left: 1.5rem;
+    padding: 0.7rem 0 0.7rem 1rem;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.test-phases .status {
+    display: inline-block;
+    position: absolute;
+    margin-left: -1.5rem;
+    transform: translateX(-50%) translateY(-0.2rem);
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    border-radius: 500%;
+    border: 2px solid #464646;
+    background-color: white;
+}
+
+.phase-name {
+    /* margin-left: 1rem; */
+    /* display: inline-block; */
 }
 
 .sections > li > .title {
@@ -82,6 +181,16 @@ li {
     font-size: 85%;
     font-weight: normal;
     color: rgb(112, 112, 112);
+}
+
+.documentation p {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+.marker {
+    display: inline-block;
+    color: #5e5e5e;
 }
 
 /* .test-phases {display: none;} */
