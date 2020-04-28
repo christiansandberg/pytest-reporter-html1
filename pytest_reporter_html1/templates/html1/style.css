@@ -1,4 +1,15 @@
 
+{% set colors = {
+    'passed': '#43A047',
+    'failed': '#E53935',
+    'error': '#B71C1C',
+    'yellow': '#FDD835',
+    'rerun': '#FDD835',
+    'xfailed': '#FFC107',
+    'xpassed': '#C0CA33',
+    'skipped': '#757575',
+} %}
+
 html {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
@@ -22,13 +33,52 @@ h1 {
 }
 
 .container {
-    margin: 1.5rem;
+    margin: 1rem 2%;
 }
+
+.summary {
+    display: grid;
+    grid-template-columns: 1fr minmax(10rem, 15rem) 10rem;
+    grid-gap: 1rem;
+    align-items: start;
+    justify-content: start;
+}
+
+.donut {
+    width: 100%;
+    height: auto;
+}
+
+{% for category, color in colors.items() %}
+.donut .{{ category }} {stroke: {{ color }};}
+{% endfor %}
+
+.statistics {
+    align-self: center;
+    justify-self: start;
+}
+
+.statistics li {
+    margin: 0;
+}
+
+.statistics li::before {
+    content: " ";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.4em;
+    background-color: teal;
+}
+
+{% for category, color in colors.items() %}
+.statistics .{{ category }}::before {background-color: {{ color }};}
+{% endfor %}
 
 .title {
     font-weight: bold;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.3rem;
 }
 
 .content {
@@ -70,24 +120,18 @@ h1 {
     margin-left: 1rem;
     font-family: monospace;
 }
-.letters .passed {color: green;}
-.letters .failed, .letters .error {color: red;}
-.letters .xfailed, .letters .xpassed, .letters .yellow {
-    color: rgb(143, 143, 0);
-}
 
-.passed > .title > .status {
-    background-color: #43A047;
+{% for category, color in colors.items() %}
+.letters .{{ category }} {color: {{ color }};}
+{% endfor %}
+
+
+{% for category, color in colors.items() %}
+.{{ category }} > .title > .status {
+    background-color: {{ color }};
     color: white;
 }
-.failed > .title > .status, .error > .title > .status {
-    background-color: #E53935;
-    color: white;
-}
-.xfailed > .title > .status, .xpassed > .title > .status, .yellow > .title > .status {
-    background-color: #FDD835;
-    color: black;
-}
+{% endfor %}
 
 ul, ol {
     list-style-type: none;
@@ -150,9 +194,8 @@ pre {
 }
 
 .test-phases .status {
-    display: inline-block;
     position: absolute;
-    margin-left: -1.5rem;
+    margin-left: -1.3rem;
     transform: translateX(-50%) translateY(-0.2rem);
     width: 1.5em;
     height: 1.5em;

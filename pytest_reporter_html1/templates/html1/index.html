@@ -4,24 +4,34 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-  {% if config._metadata %}
-  <table class="metadata">
-    {% for key, value in config._metadata.items() %}
-    <tr>
-      <td>{{ key }}</td>
-      <td>
-        {% if value is mapping %}
-          {% for key, value in value.items() %}
-            {{ key }}: {{ value }}<br/>
-          {% endfor %}
-        {% else %}
-          {{ value }}
-        {% endif %}
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% endif %}
+  <div class="summary">
+    {% if config._metadata %}
+    <div class="metadata">
+      <table>
+        {% for key, value in config._metadata.items() %}
+        <tr>
+          <td>{{ key }}</td>
+          <td>
+            {% if value is mapping %}
+              {% for key, value in value.items() %}
+                {{ key }}: {{ value }}<br/>
+              {% endfor %}
+            {% else %}
+              {{ value }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endif %}
+    {% include "html1/chart.svg" %}
+    <ul class="statistics">
+      {% for category, tests in test_runs|groupby('status.category') %}
+        <li class="{{ category }}">{{ tests|count }} {{ category }}</li>
+      {% endfor %}
+    </ul>
+  </div>
   <ol class="test-files">
     {% for fspath, tests in test_runs|groupby('item.fspath') %}
     <li class="collapsable">
