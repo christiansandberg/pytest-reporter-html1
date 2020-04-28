@@ -10,9 +10,9 @@ try:
     from ansi2html import Ansi2HTMLConverter
     from ansi2html.style import get_styles
 except ImportError:
-    conv = None
-    get_styles = None
+    HAS_ANSI = False
 else:
+    HAS_ANSI = True
     conv = Ansi2HTMLConverter(escaped=False)
 
 try:
@@ -20,30 +20,43 @@ try:
 except ImportError:
     publish_parts = None
 
+try:
+    import htmlmin
+except ImportError:
+    htmlmin = None
+
 
 def pytest_reporter_template_dir():
     return os.path.join(os.path.dirname(__file__), "templates")
 
 
 def rst2html(rst):
-    parts = publish_parts(
-        source=rst,
-        writer_name='html5',
-    )
-    return parts
+    if publish_parts is not None:
+        parts = publish_parts(source=rst, writer_name="html5")
+        return parts["body"]
+    else:
+        return re.sub(r"\n", "<br>", rst)
 
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_reporter_modify_env(env):
-    env.add_extension("jinja2.ext.debug")
     env.filters["strftime"] = lambda ts, fmt: datetime.fromtimestamp(ts).strftime(fmt)
     env.filters["timedelta"] = lambda ts: timedelta(seconds=ts)
-    env.filters["ansi"] = partial(conv.convert, full=False) if conv else str
+    env.filters["ansi"] = partial(conv.convert, full=False) if HAS_ANSI else str
     env.filters["cleandoc"] = cleandoc
     env.filters["rst2html"] = rst2html
     env.filters["css_minify"] = partial(re.sub, r"\s+", " ")
-    env.filters["html_minify"] = partial(re.sub, r">\s+<", "> <")
 
 
 def pytest_reporter_context(context):
-    context["ansi_get_styles"] = get_styles
+    if HAS_ANSI:
+        context["get_ansi_styles"] = get_styles
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_reporter_render():
+    outcome = yield
+    html = outcome.get_result()
+    if htmlmin is not None:
+        minified = htmlmin.minify(html, remove_comments=True)
+        outcome.force_result(minified)

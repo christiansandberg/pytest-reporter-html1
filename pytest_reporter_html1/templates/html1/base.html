@@ -1,36 +1,34 @@
-{% filter html_minify %}
 <!DOCTYPE html>
 <html>
 <head>
-    {% block head %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Test Report{% endblock %}</title>
-    <style type="text/css">
-{% filter css_minify %}
-{% block style %}
-{% if ansi_get_styles %}
-  {{ ansi_get_styles(dark_bg=False)|join|safe }}
-{% endif %}
-{% include "html1/style.css" %}
-{% endblock %}
-{% endfilter %}
-    </style>
-    <script>
-{% block script %}
-{% include "html1/main.js" %}
-{% endblock %}
-    </script>
+  {% block head %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title|default('Test Report') }}</title>
+  <style type="text/css">
+    {% filter css_minify %}
+    {% block style %}
+    {% if get_ansi_styles %}
+      {{ get_ansi_styles(dark_bg=False)|join|safe }}
+    {% endif %}
+    {% include "html1/style.css" %}
     {% endblock %}
+    {% endfilter %}
+      </style>
+      <script>
+    {% block script %}
+    {% include "html1/main.js" %}
+    {% endblock %}
+  </script>
+  {% endblock %}
 </head>
 <body>
-    <header>
-        {% block header %}{% endblock %}
-    </header>
-    {% block content %}{% endblock %}
-    <footer>
-        {% block footer %}{% endblock %}
-    </footer>
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% block content %}{% endblock %}
+  <footer>
+    {% block footer %}{% endblock %}
+  </footer>
 </body>
 </html>
-{% endfilter %}
