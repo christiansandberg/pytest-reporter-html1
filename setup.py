@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-reporter-html1',
-    version='0.1.0a2',
+    version='0.1.0a3',
     author='Christian Sandberg',
     author_email='christiansandberg@me.com',
     maintainer='Christian Sandberg',
@@ -23,6 +23,8 @@ setup(
     description='A basic HTML report template for Pytest',
     long_description=read('README.rst'),
     packages=find_packages(),
+    package_data={'pytest_reporter_html1': ['templates/html1/*']},
+    include_package_data=True,
     python_requires='>=3.6',
     install_requires=[
         'pytest-reporter',
