@@ -1,6 +1,6 @@
 include LICENSE
 include README.rst
-recursive-include templates *
+graft pytest_reporter_html1/templates/html1
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
