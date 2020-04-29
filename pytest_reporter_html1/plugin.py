@@ -40,6 +40,7 @@ def rst2html(rst):
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_reporter_modify_env(env):
+    env.filters["repr"] = repr
     env.filters["strftime"] = lambda ts, fmt: datetime.fromtimestamp(ts).strftime(fmt)
     env.filters["timedelta"] = lambda ts: timedelta(seconds=ts)
     env.filters["ansi"] = partial(conv.convert, full=False) if HAS_ANSI else str

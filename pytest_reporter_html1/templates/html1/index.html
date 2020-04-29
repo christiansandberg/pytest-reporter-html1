@@ -16,7 +16,7 @@
         </tr>
         <tr>
           <td>Ended</td>
-          <td>{{ started|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <td>{{ ended|strftime('%Y-%m-%d %H:%M:%S') }}</td>
         </tr>
         <tr>
           <td>Duration</td>
@@ -59,7 +59,7 @@
     <li class="collapsable">
       <div class="title">
         <div class="fspath">
-          {{ item.listchain()|selectattr('parent')|join('/', attribute='name') }}
+          {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
         </div>
         <div class="letters">
         {% for test in tests -%}

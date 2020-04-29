@@ -35,11 +35,11 @@
               <span class="marker-name badge">{{ marker.name }}</span>
               <span class="marker-args">
                 {% for value in marker.args %}
-                {{ value.__repr__() }}
+                {{ value|repr }}
                 {% endfor %}
 
                 {% for key, value in marker.kwargs.items() %}
-                {{ key }}={{ value.__repr__() }}
+                {{ key }}={{ value|repr }}
                 {% endfor %}
               </span>
             </div>
