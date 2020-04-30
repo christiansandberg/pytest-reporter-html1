@@ -1,6 +1,6 @@
 <ol class="test-runs">
   {% for test in tests %}
-  <li class="collapsable {{ test.status.category }} {{ test.status.style|join(' ') }}">
+  <li class="collapsible {{ test.status.category }} {{ test.status.style|join(' ') }}">
     <div class="title">
       <div class="status">{{ test.status.word }}</div>
       <div class="test-name">{{ test.item.name }}</div>
@@ -60,22 +60,22 @@
         </tr>
         {% endif %}
       </table>
+      {% for phase in test.phases if phase.report.longrepr %}
+      <div class="repr">
+        <pre>{{ phase.report.longrepr }}</pre>
+      </div>
+      {% endfor %}
       <ol class="test-phases">
         {% set ns = namespace(used_sections=[]) %}
         {% for phase in test.phases %}
           {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
-          <li class="collapsable {{ phase.report.when }} {{ phase.status.category }} {{ phase.status.style|join(' ') }}">
+          <li class="collapsible {{ phase.report.when }} {{ phase.status.category }} {{ phase.status.style|join(' ') }}">
             <div class="title">
               <div class="status"><!--{{ phase.status.letter }}--></div>
               <div class="phase-name">{{ phase.report.when|title }}</div>
               <!--<span class="duration">{{ phase.report.duration|timedelta }}</span>-->
             </div>
             <div class="content">
-              {% if phase.report.longrepr %}
-              <div class="repr">
-                <pre>{{ phase.report.longrepr }}</pre>
-              </div>
-              {% endif %}
               {#
               <li>
                 <div class="title">Captured log {{ phase.report.when }}</div>

@@ -1,6 +1,6 @@
 
 function collapse() {
-    var elements = document.getElementsByClassName('collapsable');
+    var elements = document.getElementsByClassName('collapsible');
     Array.prototype.forEach.call(elements, function(el) {
         el.classList.add('collapsed');
         el.querySelector(':scope > .title').addEventListener('click', function() {

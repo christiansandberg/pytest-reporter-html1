@@ -5,7 +5,7 @@
     'error': '#B71C1C',
     'xfailed': '#FFC107',
     'xpassed': '#C0CA33',
-    'skipped': '#757575',
+    'skipped': '#9E9E9E',
     'yellow': '#FDD835',
 } %}
 
@@ -82,6 +82,10 @@ pre {
     height: auto;
 }
 
+.donut text {
+    font-size: 10px;
+}
+
 {% for category, color in colors.items() %}
 .donut .{{ category }} {stroke: {{ color }};}
 {% endfor %}
@@ -99,6 +103,7 @@ pre {
     display: inline-block;
     width: 1em;
     height: 1em;
+    border-radius: 4px;
     margin-right: 0.4em;
     background-color: teal;
 }
@@ -117,6 +122,24 @@ pre {
     margin-top: 0.7rem;
 }
 
+.collapsible > .title::before {
+    content: " ";
+    background-image: url("{{ icons.arrow }}");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    width: 0.7em;
+    height: 0.7em;
+    display: inline-block;
+    justify-self: end;
+    transform: rotate(0deg);
+    transition: transform ease-out 0.2s;
+}
+
+.collapsible:not(.collapsed) > .title::before {
+    transform: rotate(90deg);
+}
+
 .collapsed > .content {
     display: none;
 }
@@ -133,6 +156,7 @@ pre {
 
 .fspath {
     display: inline-block;
+    margin-left: 0.4rem;
 }
 
 .letters {
@@ -155,7 +179,7 @@ pre {
 
 .test-files > li > .title {
     font-size: 1.1em;
-    border-bottom: 1px solid rgb(199, 199, 199);
+    /* border-bottom: 1px solid rgb(199, 199, 199); */
     /* padding: 0.3em 0.5em; */
     /* border-radius: 4px; */
     /* border-bottom: 1px solid rgb(173, 173, 173); */
@@ -196,10 +220,14 @@ pre {
 
 .test-runs > li > .title {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1rem auto 1fr auto;
     grid-gap: 0.7rem;
     align-items: center;
     justify-content: start;
+}
+
+.test-name {
+    word-break: break-all;
 }
 
 .test-runs > li > .content {
@@ -210,14 +238,16 @@ pre {
     position: relative;
     border-left: 1px solid #b1b1b1;
     margin-left: 1rem;
-    padding: 0.7rem 0 0.7rem 1rem;
+    /* padding: 0.7rem 0 0.7rem 1rem; */
+    padding-left: 1rem;
     margin-bottom: 0;
     border-radius: 0;
 }
 
 .test-phases .status {
     position: absolute;
-    margin-left: -1.4rem;
+    display: inline-block;
+    margin-left: -2.4rem;
     padding: 0;
     transform: translateX(-50%) translateY(-0.2rem);
     width: 1.5em;
@@ -230,7 +260,7 @@ pre {
 
 .phase-name {
     /* margin-left: 1rem; */
-    /* display: inline-block; */
+    display: inline-block;
 }
 
 .sections > li > .title {
@@ -243,7 +273,6 @@ pre {
 }
 
 .duration {
-    /* float: right; */
     font-size: 85%;
     font-weight: normal;
     color: rgb(112, 112, 112);
@@ -257,6 +286,9 @@ pre {
 .marker {
     display: inline-block;
     color: #5e5e5e;
+    font-size: 0.85rem;
 }
 
-/* .test-phases {display: none;} */
+.fixturename {
+    font-size: 0.85rem;
+}

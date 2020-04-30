@@ -1,5 +1,5 @@
-<svg width="100%" height="100%" viewBox="0 0 42 42">
-  <!-- https://medium.com/@heyoka/scratch-made-svg-donut-pie-charts-in-html5-2c587e935d72 -->
+<!-- https://medium.com/@heyoka/scratch-made-svg-donut-pie-charts-in-html5-2c587e935d72 -->
+<svg xlmns="http://www.w3.org/2000/svg" viewBox="0 0 42 42">
   {% set ns = namespace(sum=0) %}
   {% set total = test_runs|count %}
   {% for category, tests in test_runs|groupby('status.category') %}
@@ -18,4 +18,5 @@
     </circle>
     {% set ns.sum = ns.sum + percent %}
   {% endfor %}
+  <text x="21" y="25" text-anchor="middle">{{ total }}</text>
 </svg>

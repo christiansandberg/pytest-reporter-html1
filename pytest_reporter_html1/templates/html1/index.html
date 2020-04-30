@@ -53,10 +53,10 @@
     </ul>
     {% endblock %}
   </div>
-  <ol class="test-files">
+  <ul class="test-files">
     {% for fspath, tests in test_runs|groupby('item.fspath') %}
     {% set item = tests|map(attribute='item.parent')|first %}
-    <li class="collapsable">
+    <li class="collapsible">
       <div class="title">
         <div class="fspath">
           {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
@@ -103,6 +103,6 @@
       #}
     </li>
     {% endfor %}
-  </ol>
+  </ul>
 </div>
 {% endblock %}

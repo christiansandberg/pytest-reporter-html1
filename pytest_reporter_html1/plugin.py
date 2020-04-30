@@ -2,7 +2,9 @@ from datetime import datetime, timedelta
 import re
 from functools import partial
 import os.path
+from pathlib import Path
 from inspect import cleandoc
+from base64 import b64encode
 
 import pytest
 
@@ -46,12 +48,17 @@ def pytest_reporter_modify_env(env):
     env.filters["ansi"] = partial(conv.convert, full=False) if HAS_ANSI else str
     env.filters["cleandoc"] = cleandoc
     env.filters["rst2html"] = rst2html
+    env.filters["base64"] = lambda s: b64encode(b).decode("utf-8")
     env.filters["css_minify"] = partial(re.sub, r"\s+", " ")
 
 
 def pytest_reporter_context(context):
     if HAS_ANSI:
         context["get_ansi_styles"] = get_styles
+    icons = Path(__file__).parent / "templates" / "html1" / "icons"
+    context["icons"] = {
+        icon.stem: "data:image/svg+xml;base64," + b64encode(icon.read_bytes()).decode("utf-8") for icon in icons.glob("*.svg")
+    }
 
 
 @pytest.hookimpl(hookwrapper=True)
