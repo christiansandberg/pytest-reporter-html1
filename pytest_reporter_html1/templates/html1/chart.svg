@@ -1,12 +1,12 @@
 <!-- https://medium.com/@heyoka/scratch-made-svg-donut-pie-charts-in-html5-2c587e935d72 -->
 <svg xlmns="http://www.w3.org/2000/svg" viewBox="0 0 42 42">
   {% set ns = namespace(sum=0) %}
-  {% set total = test_runs|count %}
-  {% for category, tests in test_runs|groupby('status.category') %}
-    {% set count = tests|count %}
+  {% set total = tests|count %}
+  {% for category, sub_tests in tests|groupby('status.category') %}
+    {% set count = sub_tests|count %}
     {% set percent = count / total * 100 %}
     <circle
-      class="donut-segment {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}"
+      class="donut-segment {{ category }} {{ sub_tests|map(attribute='status.style')|first|join(' ') }}"
       stroke-dasharray="{{ percent }} {{ 100 - percent }}"
       stroke-dashoffset="{{ 100 - ns.sum + 25 }}"
       cx="21"

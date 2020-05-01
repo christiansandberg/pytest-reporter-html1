@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-reporter-html1',
-    version='0.1.0a3',
+    version='0.1.0',
     author='Christian Sandberg',
     author_email='christiansandberg@me.com',
     maintainer='Christian Sandberg',
@@ -27,8 +27,10 @@ setup(
     include_package_data=True,
     python_requires='>=3.6',
     install_requires=[
-        'pytest-reporter',
+        'pytest-reporter>=0.1.0',
         'Jinja2',
+        'htmlmin',
+        'docutils',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

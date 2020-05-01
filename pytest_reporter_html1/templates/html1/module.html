@@ -1,105 +1,98 @@
-<ol class="test-runs">
+<ol class="tests">
   {% for test in tests %}
-  <li class="collapsible {{ test.status.category }} {{ test.status.style|join(' ') }}">
-    <div class="title">
-      <div class="status">{{ test.status.word }}</div>
-      <div class="test-name">{{ test.item.name }}</div>
-      <div class="duration">{{ test.phases|sum('report.duration')|timedelta }}</div>
-    </div>
-    <div class="content">
-      {% if test.item.function.__doc__ %}
-      <div class="documentation">
-        {{ test.item.function.__doc__|cleandoc|rst2html|safe }}
+    <li class="collapsible {{ test.status.category }}">
+      <div class="title">
+        {% block test_title scoped %}
+        <div class="status {{ test.status.category }} {{ test.status.style|join(' ') }}">{{ test.status.word }}</div>
+        <h3 class="test-name">{{ test.item.name }}</h3>
+        <div class="duration">{{ test.phases|sum('report.duration')|timedelta }}</div>
+        {% endblock %}
       </div>
-      {% endif %}
-      <table class="metadata">
-        <tr>
-          <td>Started</td>
-          <td>{{ test.phases|map(attribute='call.start')|first|strftime('%Y-%m-%d %H:%M:%S') }}</td>
-        </tr>
-        <tr>
-          <td>Ended</td>
-          <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime('%Y-%m-%d %H:%M:%S') }}</td>
-        </tr>
-        <tr>
-          <td>Duration</td>
-          <td>{{ test.phases|map(attribute='report.duration')|sum|timedelta }}</td>
-        </tr>
-        {% set markers = test.item.iter_markers()|list %}
-        {% if markers %}
-        <tr>
-          <td>Markers</td>
-          <td>
-            {% for marker in markers %}
-            <div class="marker">
-              <span class="marker-name badge">{{ marker.name }}</span>
-              <span class="marker-args">
-                {% for value in marker.args %}
-                {{ value|repr }}
-                {% endfor %}
+      <div class="content">
+        {% block test_content scoped %}
+        {% if test.item.function.__doc__ %}
+          <div class="documentation">
+            {{ test.item.function.__doc__|cleandoc|rst|safe }}
+          </div>
+        {% endif %}
+        <table class="metadata">
+          {% block test_metadata scoped %}
+          <tr>
+            <td>Started</td>
+            <td>{{ test.phases|map(attribute='call.start')|first|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          </tr>
+          <tr>
+            <td>Ended</td>
+            <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          </tr>
+          <tr>
+            <td>Duration</td>
+            <td>{{ test.phases|map(attribute='report.duration')|sum|timedelta }}</td>
+          </tr>
+          {% set markers = test.item.iter_markers()|list %}
+          {% if markers %}
+            <tr>
+              <td>Markers</td>
+              <td>
+                {% for marker in markers %}
+                  <div class="marker">
+                    <span class="marker-name badge">{{ marker.name }}</span>
+                    <span class="marker-args">
+                      {% for value in marker.args %}
+                        {{ value|repr }}
+                      {% endfor %}
 
-                {% for key, value in marker.kwargs.items() %}
-                {{ key }}={{ value|repr }}
+                      {% for key, value in marker.kwargs.items() %}
+                        {{ key }}={{ value|repr }}
+                      {% endfor %}
+                    </span>
+                  </div>
                 {% endfor %}
-              </span>
-            </div>
-            {% endfor %}
-          </td>
-        </tr>
-        {% endif %}
-        {% if test.item.fixturenames %}
-        <tr>
-          <td>Fixtures</td>
-          <td>
-            {% for fixturename in test.item.fixturenames if not fixturename.startswith('_') %}
-            <div class="badge fixturename">
-              {{ fixturename }}
-            </div>
-            {% endfor %}
-          </td>
-        </tr>
-        {% endif %}
-      </table>
-      {% for phase in test.phases if phase.report.longrepr %}
-      <div class="repr">
-        <pre>{{ phase.report.longrepr }}</pre>
-      </div>
-      {% endfor %}
-      <ol class="test-phases">
-        {% set ns = namespace(used_sections=[]) %}
-        {% for phase in test.phases %}
-          {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
-          <li class="collapsible {{ phase.report.when }} {{ phase.status.category }} {{ phase.status.style|join(' ') }}">
-            <div class="title">
-              <div class="status"><!--{{ phase.status.letter }}--></div>
-              <div class="phase-name">{{ phase.report.when|title }}</div>
-              <!--<span class="duration">{{ phase.report.duration|timedelta }}</span>-->
-            </div>
-            <div class="content">
-              {#
-              <li>
-                <div class="title">Captured log {{ phase.report.when }}</div>
-                <div class="content">
-                  <ol>
-                    {% for record in phase.log_records %}
-                      <li>{{ record.message }}</li>
-                    {% endfor %}
-                  </ol>
-                </div>
-              </li>
-              #}
-              {% for section, content in sections %}
-              {% set ns.used_sections = ns.used_sections + [section] %}
-              <div class="section">
-                <div class="section-title">{{ section }}</div>
-                <pre>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</pre>
-              </div>
-              {% endfor %}
-            </div>
-          </li>
+              </td>
+            </tr>
+          {% endif %}
+          {% if test.item.fixturenames %}
+            <tr>
+              <td>Fixtures</td>
+              <td>
+                {% for fixturename in test.item.fixturenames if not fixturename.startswith('_') %}
+                  <div class="badge fixturename">
+                    {{ fixturename }}
+                  </div>
+                {% endfor %}
+              </td>
+            </tr>
+          {% endif %}
+          {% endblock %}
+        </table>
+        {% for phase in test.phases if phase.report.longrepr %}
+          <div class="repr">
+            <pre>{{ phase.report.longrepr }}</pre>
+          </div>
         {% endfor %}
-      </ol>
-    </div>
-  </li>
+        <ol class="test-phases">
+          {% set ns = namespace(used_sections=[]) %}
+          {% for phase in test.phases %}
+            {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
+            <li class="collapsible {{ phase.report.when }} {{ phase.status.category }}">
+              <div class="title">
+                <div class="status {{ phase.status.category }} {{ phase.status.style|join(' ') }}"></div>
+                <h4 class="phase-name">{{ phase.report.when|title }}</h4>
+              </div>
+              <div class="content">
+                {% for section, content in sections %}
+                  {% set ns.used_sections = ns.used_sections + [section] %}
+                  <div class="section">
+                    <h5 class="section-title">{{ section }}</h5>
+                    <pre>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</pre>
+                  </div>
+                {% endfor %}
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+        {% endblock %}
+      </div>
+    </li>
   {% endfor %}
 </ol>

@@ -10,6 +10,7 @@
     {% block summary %}
     <div class="metadata">
       <table>
+        {% block metadata %}
         <tr>
           <td>Started</td>
           <td>{{ started|strftime('%Y-%m-%d %H:%M:%S') }}</td>
@@ -24,84 +25,61 @@
           <td>{{ duration|timedelta }}</td>
         </tr>
         {% if config._metadata %}
-        {% for key, value in config._metadata.items() %}
-        <tr>
-          <td>{{ key }}</td>
-          <td>
-            {% if value is mapping %}
-              {% for key, value in value.items() %}
-                {{ key }}: {{ value }}<br/>
-              {% endfor %}
-            {% else %}
-              {{ value }}
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
+          {% for key, value in config._metadata.items() %}
+            <tr>
+              <td>{{ key }}</td>
+              <td>
+                {% if value is mapping %}
+                  {% for key, value in value.items() %}
+                    {{ key }}: {{ value }}<br/>
+                  {% endfor %}
+                {% else %}
+                  {{ value }}
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
         {% endif %}
+        {% endblock %}
       </table>
     </div>
     <div class="donut">
       {% include "html1/chart.svg" %}
     </div>
     <ul class="statistics">
-      {% for category, tests in test_runs|groupby('status.category') %}
-        <li class="{{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">
-          {{ tests|count }} {{ category }}
+      {% for category, tests in tests|groupby('status.category') %}
+        <li>
+          <span class="status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">
+            {{ tests|count }}
+          </span>
+          {{ category }}
         </li>
       {% endfor %}
     </ul>
     {% endblock %}
   </div>
   <ul class="test-files">
-    {% for fspath, tests in test_runs|groupby('item.fspath') %}
-    {% set item = tests|map(attribute='item.parent')|first %}
-    <li class="collapsible">
-      <div class="title">
-        <div class="fspath">
-          {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
-        </div>
-        <div class="letters">
-        {% for test in tests -%}
-          {% for phase in test.phases if phase.status.letter -%}
-            <span class="{{ phase.status.category }} {{ phase.status.style|join(' ') }}">{{ phase.status.letter }}</span>
+    {% for fspath, tests in tests|groupby('item.fspath') %}
+      {% set item = tests|map(attribute='item.parent')|first %}
+      <li class="collapsible">
+        <div class="title">
+          {% block module_title scoped %}
+          <h2 class="fspath">
+            {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
+          </h2>
+          <div class="counts">
+          {% for category, tests in tests|groupby('status.category') -%}
+            <div title="{{ tests|count }} {{ category }}" class="status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">{{ tests|count }}</div>
           {%- endfor %}
-        {%- endfor %}
+          </div>
+          {% endblock %}
         </div>
-      </div>
-      <div class="content">
-        {% block module scoped %}
-          {% include "html1/module.html" %}
-        {% endblock %}
-      </div>
-      {#
-      <td class="result">{{ test.word }}</td>
-      <td class="nodeid">{{ test.item.nodeid }}</td>
-      <td class="started">{{ test.phases|map(attribute='call.start')|first|datetime|strftime('%H:%M:%S.%f') }}</td>
-      <td class="duration">{{ test.phases|sum('report.duration')|round(1) }}s</td>
-          {% for phase in test.phases %}
-          <li class="{{ phase.report.when }} {{ phase.category }}">
-              <h3>{{ phase.report.when|title }}</h3>
-              <div>{{ phase.word }}</div>
-              <span>
-                  {{ phase.call.start|datetime|strftime('%H:%M:%S.%f') }}
-              </span>
-              <pre><code>{{ phase.report.longrepr }}</code></pre>
-              <ol>
-                  {% for record in phase.log_records %}
-                  <li>{{ record.message }}</li>
-                  {% endfor %}
-              </ol>
-              {% for section, content in phase.report.sections %}
-                  <h4>{{ section }}</h4>
-                  <div>
-                      {{ content }}
-                  </div>
-              {% endfor %}
-          </li>
-          {% endfor %}
-      #}
-    </li>
+        <div class="content">
+          {% block module_content scoped %}
+            {% include "html1/module.html" %}
+          {% endblock %}
+        </div>
+      </li>
     {% endfor %}
   </ul>
 </div>

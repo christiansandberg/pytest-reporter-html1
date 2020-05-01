@@ -26,7 +26,9 @@ You can install "pytest-reporter-html1" via `pip`_ from `PyPI`_::
 Usage
 -----
 
-* TODO
+Specify the html1 template and the output path of the report::
+
+    $ pytest --template=html1/index.html --report=report.html
 
 
 License
