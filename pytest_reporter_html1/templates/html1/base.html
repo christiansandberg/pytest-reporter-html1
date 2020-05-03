@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   {% block head %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title|default('Test Report') }}</title>
-  <style type="text/css">
+  <style>
     {% filter css_minify %}
     {% block style %}
-    {% if get_ansi_styles %}
-      {{ get_ansi_styles(dark_bg=False)|join|safe }}
-    {% endif %}
+    {{ get_ansi_styles(dark_bg=False)|join|safe }}
     {% include "html1/style.css" %}
     {% endblock %}
     {% endfilter %}
-      </style>
-      <script>
+    </style>
+    <script>
     {% block script %}
     {% include "html1/main.js" %}
     {% endblock %}

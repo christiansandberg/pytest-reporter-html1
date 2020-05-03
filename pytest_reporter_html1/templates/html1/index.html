@@ -6,7 +6,7 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-  <div class="summary">
+  <section class="summary">
     {% block summary %}
     <div class="metadata">
       <table>
@@ -43,25 +43,31 @@
         {% endblock %}
       </table>
     </div>
-    <div class="donut">
+    <div class="graph">
       {% include "html1/chart.svg" %}
-    </div>
-    <ul class="statistics">
-      {% for category, tests in tests|groupby('status.category') %}
-        <li>
+      <div class="legend">
+        {% for category, tests in tests|groupby('status.category') %}
           <span class="status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">
             {{ tests|count }}
           </span>
-          {{ category }}
-        </li>
-      {% endfor %}
-    </ul>
+          <span>{{ category }}</span>
+        {% endfor %}
+      </div>
+    </div>
     {% endblock %}
-  </div>
-  <ul class="test-files">
+  </section>
+  {% if warnings %}
+    <section class="warnings">
+      {% for warning in warnings %}
+        <div class="status badge warning">WARNING</div>
+        <div>{{ warning.filename }}:{{ warning.lineno }}<br>{{ warning.message }}</div>
+      {% endfor %}
+    </section>
+  {% endif %}
+  <section class="test-files">
     {% for fspath, tests in tests|groupby('item.fspath') %}
       {% set item = tests|map(attribute='item.parent')|first %}
-      <li class="collapsible">
+      <div class="file collapsible">
         <div class="title">
           {% block module_title scoped %}
           <h2 class="fspath">
@@ -79,8 +85,8 @@
             {% include "html1/module.html" %}
           {% endblock %}
         </div>
-      </li>
+      </div>
     {% endfor %}
-  </ul>
+  </section>
 </div>
 {% endblock %}
