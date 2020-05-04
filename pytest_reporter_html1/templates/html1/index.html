@@ -67,8 +67,8 @@
   <section class="test-files">
     {% for fspath, tests in tests|groupby('item.fspath') %}
       {% set item = tests|map(attribute='item.parent')|first %}
-      <div class="file collapsible">
-        <div class="title">
+      <details class="file">
+        <summary class="title">
           {% block module_title scoped %}
           <h2 class="fspath">
             {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
@@ -79,13 +79,13 @@
           {%- endfor %}
           </div>
           {% endblock %}
-        </div>
+        </summary>
         <div class="content">
           {% block module_content scoped %}
             {% include "html1/module.html" %}
           {% endblock %}
         </div>
-      </div>
+      </details>
     {% endfor %}
   </section>
 </div>

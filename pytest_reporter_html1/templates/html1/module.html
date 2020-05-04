@@ -1,12 +1,12 @@
 {% for test in tests %}
-  <div class="test collapsible {{ test.status.category }}">
-    <div class="title">
+  <details class="test {{ test.status.category }}">
+    <summary class="title test-title">
       {% block test_title scoped %}
       <div class="status badge {{ test.status.category }} {{ test.status.style|join(' ') }}">{{ test.status.word }}</div>
       <h3 class="test-name">{{ test.item.name }}</h3>
       <div class="duration">{{ test.phases|sum('report.duration')|timedelta }}</div>
       {% endblock %}
-    </div>
+    </summary>
     <div class="content">
       {% block test_content scoped %}
       {% if test.item.function.__doc__ %}
@@ -73,11 +73,11 @@
         {% set ns = namespace(used_sections=[]) %}
         {% for phase in test.phases %}
           {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
-          <div class="collapsible phase {{ phase.report.when }} {{ phase.status.category }}">
-            <div class="title">
-              <div class="status {{ phase.status.category }} {{ phase.status.style|join(' ') }}"></div>
+          <details class="phase {{ phase.report.when }} {{ phase.status.category }}">
+            <summary class="title">
+              <div class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></div>
               <h4 class="phase-name">{{ phase.report.when|title }}</h4>
-            </div>
+            </summary>
             <div class="content">
               {% for section, content in sections %}
                 {% set ns.used_sections = ns.used_sections + [section] %}
@@ -87,10 +87,10 @@
                 </div>
               {% endfor %}
             </div>
-          </div>
+          </details>
         {% endfor %}
         </div>
       {% endblock %}
     </div>
-  </div>
+  </details>
 {% endfor %}

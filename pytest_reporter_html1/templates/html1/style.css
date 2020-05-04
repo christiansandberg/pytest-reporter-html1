@@ -25,6 +25,7 @@ li {
 pre {
     background-color: rgb(240, 240, 240);
     white-space: pre-wrap;
+    word-wrap: break-word;
     padding: 0.7em;
     margin: 0.7rem 0;
     border: 1px solid rgb(199, 199, 199);
@@ -66,7 +67,7 @@ section {
     /* justify-content: start; */
 }
 
-.metadata {
+.summary > .metadata {
     align-self: start;
 }
 
@@ -121,12 +122,26 @@ section {
  TESTS
 **********************************************/
 
-.title {
+details {
+    display: block;
+}
+
+details > summary {
+    display: block;
     cursor: pointer;
+    list-style: none;
     padding: 0.4rem;
 }
 
-.collapsible > .title::before {
+details > summary:focus {
+    outline: 0;
+}
+
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+details > summary::before {
     content: " ";
     background-image: url("{{ icons.arrow }}");
     background-size: contain;
@@ -140,12 +155,12 @@ section {
     transition: transform ease-out 0.2s;
 }
 
-.collapsible:not(.collapsed) > .title::before {
+details[open] > summary::before {
     transform: rotate(90deg);
 }
 
-.collapsed > .content {
-    display: none;
+.content {
+    padding: 0.4rem;
 }
 
 .badge {
@@ -183,8 +198,6 @@ section {
 
 .file > .content {
     margin-left: 1rem;
-    margin-top: -0.5rem;
-    padding: 0.7rem 0;
 }
 
 .test {
@@ -198,9 +211,9 @@ section {
     font-weight: bold;
 }
 
-.test > .title {
+.test-title {
     display: grid;
-    grid-template-columns: 1rem 4.5em 1fr auto;
+    grid-template-columns: auto 4.5em 1fr auto;
     grid-gap: 0.7rem;
     align-items: center;
     /* justify-content: start; */
@@ -216,10 +229,6 @@ section {
     font-size: 1em;
     margin: 0;
     word-break: break-all;
-}
-
-.test > .content {
-    padding: 0.7rem;
 }
 
 .documentation p {
@@ -250,20 +259,24 @@ section {
 .phase {
     position: relative;
     /* padding: 0.7rem 0 0.7rem 1rem; */
-    padding-left: 1rem;
+    padding-left: 0.7rem;
     margin-bottom: 0;
     border-radius: 0;
+}
+
+.phase > summary {
+    margin-left: 0.7rem;
 }
 
 .phase .status {
     position: absolute;
     display: inline-block;
-    margin-left: -2.4rem;
-    margin-top: -0.3em;
+    left: 0;
+    margin-top: -0.1em;
     padding: 0;
     transform: translateX(-50%);
-    width: 1.5em;
-    height: 1.5em;
+    width: 1.2em;
+    height: 1.2em;
     text-align: center;
     border-radius: 500%;
     border: 2px solid #464646;

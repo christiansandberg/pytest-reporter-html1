@@ -6,15 +6,18 @@
   {% for category, sub_tests in tests|groupby('status.category') %}
     {% set count = sub_tests|count %}
     {% set L = count / total * C %}
+    {% set color = colors[category] %}
     <circle
-      class="donut-segment {{ category }} {{ sub_tests|map(attribute='status.style')|first|join(' ') }}"
+      class="donut-segment"
       stroke-dasharray="{{ L }} {{ C - L }}"
       stroke-dashoffset="{{ C - ns.sum + (C / 4) }}"
       cx="21"
       cy="21"
       r="{{ r }}"
       fill="transparent"
-      stroke="{{ colors[category][0] }}"
+      {% if color %}
+      stroke="{{ color[0] }}"
+      {% endif %}
       stroke-width="3">
     </circle>
     {% set ns.sum = ns.sum + L %}
