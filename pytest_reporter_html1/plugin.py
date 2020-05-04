@@ -24,6 +24,7 @@ def pytest_reporter_context(context, config):
         "xfailed": ("#EF9A9A", "#333333"),
         "xpassed": ("#A5D6A7", "#333333"),
         "skipped": ("#9E9E9E", "#FFFFFF"),
+        "rerun": ("#FBC02D", "#333333"),
         "warning": ("#FBC02D", "#333333"),
         "green": ("#43A047", "#FFFFFF"),
         "red": ("#E53935", "#FFFFFF"),

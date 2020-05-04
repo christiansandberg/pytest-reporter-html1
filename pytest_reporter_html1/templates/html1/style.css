@@ -97,10 +97,6 @@ section {
     fill: #333333;
 }
 
-{% for category, (bg, fg) in colors.items() %}
-.graph svg .{{ category }} {stroke: {{ bg }};}
-{% endfor %}
-
 .legend {
     display: grid;
     grid-template-columns: auto 1fr;

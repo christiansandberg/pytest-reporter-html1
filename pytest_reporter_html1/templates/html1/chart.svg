@@ -1,4 +1,4 @@
-<svg viewBox="0 0 42 42">
+<svg width="200" height="200" viewBox="0 0 42 42">
   {% set ns = namespace(sum=0) %}
   {% set total = tests|count %}
   {% set r = 16 %}
@@ -14,7 +14,7 @@
       cy="21"
       r="{{ r }}"
       fill="transparent"
-      stroke="#ce4b99"
+      stroke="{{ colors[category][0] }}"
       stroke-width="3">
     </circle>
     {% set ns.sum = ns.sum + L %}
