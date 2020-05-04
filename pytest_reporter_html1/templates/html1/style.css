@@ -1,14 +1,37 @@
 
+/**********************************************
+ ANSI2HTML
+**********************************************/
+{{ get_ansi_styles(dark_bg=False)|join|safe }}
+
+
+{% filter css_minify %}
+
+/**********************************************
+ BASE
+**********************************************/
+
 html {
     font-family: Arial, Helvetica, sans-serif;
     /* font-size: 16px; */
 }
 
+@media only screen and (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
+
 body {
     padding: 0;
     margin: 0;
-    background-color: rgb(248, 248, 248);
-    color: #333333;
+}
+
+@media only screen {
+    body {
+        background-color: rgb(248, 248, 248);
+        color: #333333;
+    }
 }
 
 ul, ol {
@@ -32,8 +55,10 @@ pre {
     border-radius: 4px;
 }
 
-.container {
-    margin: 1rem 2%;
+@media only screen {
+    .container {
+        margin: 1rem 2%;
+    }
 }
 
 
@@ -59,21 +84,18 @@ section {
  SUMMARY
 **********************************************/
 
-.summary {
-    display: grid;
-    grid-template-columns: auto minmax(15rem, 23rem);
-    grid-gap: 1rem;
-    align-items: center;
-    /* justify-content: start; */
-}
+@media only screen and (min-width: 1024px) {
+    .summary {
+        display: grid;
+        grid-template-columns: auto minmax(15rem, 23rem);
+        grid-gap: 1rem;
+        align-items: center;
+        /* justify-content: start; */
+    }
 
-.summary > .metadata {
-    align-self: start;
-}
-
-.metadata td:first-child {
-    font-weight: bold;
-    padding-right: 0.7rem;
+    .summary > .metadata {
+        align-self: start;
+    }
 }
 
 .metadata td {
@@ -81,11 +103,21 @@ section {
     vertical-align: top;
 }
 
+.metadata td:first-child {
+    font-weight: bold;
+    padding-right: 0.7rem;
+}
+
+.metadata .value {
+    word-break: break-all;
+}
+
 .graph {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(100px, 250px) auto;
     grid-gap: 0.7rem;
     align-items: center;
+    justify-content: center;
 }
 
 .graph svg {
@@ -187,6 +219,12 @@ details[open] > summary::before {
     align-items: center;
 }
 
+@media only print {
+    .file > .title {
+        border-bottom: 1px solid gray;
+    }
+}
+
 .fspath {
     margin: 0;
     font-size: 1.1em;
@@ -196,15 +234,13 @@ details[open] > summary::before {
     margin-right: 0.3em;
 }
 
-.file > .content {
-    margin-left: 1rem;
-}
-
-.test {
-    background-color: white;
-    margin-bottom: 0.7rem;
-    border-radius: 4px;
-    box-shadow: 0 1px 2px #afafaf;
+@media only screen {
+    .test {
+        background-color: white;
+        margin-bottom: 0.7rem;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px #afafaf;
+    }
 }
 
 .status {
@@ -220,9 +256,16 @@ details[open] > summary::before {
 }
 
 .duration {
+    display: none;
     font-size: 85%;
     font-weight: normal;
     color: rgb(112, 112, 112);
+}
+
+@media only screen and (min-width: 500px) {
+    .duration {
+        display: inline-block;
+    }
 }
 
 .test-name {
@@ -237,7 +280,7 @@ details[open] > summary::before {
 }
 
 .marker {
-    display: inline-block;
+    display: block;
     color: #5e5e5e;
     margin: 0 0.2rem 0.2rem 0;
 }
@@ -264,10 +307,6 @@ details[open] > summary::before {
     border-radius: 0;
 }
 
-.phase > summary {
-    margin-left: 0.7rem;
-}
-
 .phase .status {
     position: absolute;
     display: inline-block;
@@ -275,8 +314,8 @@ details[open] > summary::before {
     margin-top: -0.1em;
     padding: 0;
     transform: translateX(-50%);
-    width: 1.2em;
-    height: 1.2em;
+    width: 1.0em;
+    height: 1.0em;
     text-align: center;
     border-radius: 500%;
     border: 2px solid #464646;
@@ -296,3 +335,17 @@ details[open] > summary::before {
     margin: 1em 0 0 0;
     padding: 0;
 }
+
+
+/**********************************************
+ FOOTER
+**********************************************/
+
+footer {
+    font-size: 85%;
+    font-style: italic;
+    color: #999999;
+    text-align: right;
+}
+
+{% endfilter %}
