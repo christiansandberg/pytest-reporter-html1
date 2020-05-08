@@ -4,8 +4,9 @@ import re
 from inspect import cleandoc
 from base64 import b64encode
 import shutil
+import mimetypes
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader, select_autoescape, evalcontextfilter, Markup
 from ansi2html import Ansi2HTMLConverter
 from ansi2html.style import get_styles
 from docutils.core import publish_parts
@@ -13,7 +14,6 @@ import htmlmin
 
 
 TEMPLATE_PATH = Path(__file__).parent / "templates"
-ICONS_PATH = TEMPLATE_PATH / "html1" / "icons"
 # category/style: background-color, color
 COLORS = {
     "passed": ("#43A047", "#FFFFFF"),
@@ -47,6 +47,7 @@ class TemplatePlugin:
 
     def __init__(self, config):
         self.self_contained = not config.getoption("--split-report")
+        self._css = None
         self._assets = []
 
     def pytest_reporter_loader(self, dirs, config):
@@ -55,17 +56,10 @@ class TemplatePlugin:
             loader=FileSystemLoader(dirs + [str(TEMPLATE_PATH)]),
             autoescape=select_autoescape(["html", "htm", "xml"]),
         )
-        env.globals["icons"] = icons = {}
-        for icon in ICONS_PATH.glob("*.svg"):
-            if self.self_contained:
-                icons[icon.stem] = (
-                    "data:image/svg+xml;base64," +
-                    b64encode(icon.read_bytes()).decode("utf-8")
-                )
-            else:
-                icons[icon.stem] = icon.name
         env.globals["get_ansi_styles"] = get_styles
         env.globals["self_contained"] = self.self_contained
+        env.filters["css"] = self._cssfilter
+        env.filters["asset"] = self._assetfilter
         env.filters["repr"] = repr
         env.filters["strftime"] = lambda ts, fmt: datetime.fromtimestamp(ts).strftime(fmt)
         env.filters["timedelta"] = lambda ts: timedelta(seconds=ts)
@@ -78,6 +72,25 @@ class TemplatePlugin:
     def pytest_reporter_context(self, context, config):
         context.setdefault("colors", COLORS)
 
+    def _cssfilter(self, css):
+        if self.self_contained:
+            return Markup("<style>") + css + Markup("</style>")
+        else:
+            self._css = css
+            return Markup('<link rel="stylesheet" type="text/css" href="html1.css">')
+
+    def _assetfilter(self, src):
+        path = TEMPLATE_PATH / src
+        if self.self_contained:
+            mimetype, _ = mimetypes.guess_type(src)
+            content = path.read_bytes()
+            return (
+                "data:" + mimetype + ";base64," + b64encode(content).decode("utf-8")
+            )
+        else:
+            self._assets.append(path)
+            return path.name
+
     def pytest_reporter_render(self, template_name, dirs, context):
         try:
             template = self.env.get_template(template_name)
@@ -88,11 +101,10 @@ class TemplatePlugin:
         return minified
 
     def pytest_reporter_finish(self, path, context, config):
-        if not self.self_contained:
-            assets = path.parent / "assets"
-            assets.mkdir(parents=True, exist_ok=True)
-            css = self.env.get_template("html1/style.css").render(context)
+        assets = path.parent
+        # assets.mkdir(parents=True, exist_ok=True)
+        if self._css:
             style_css = assets / "html1.css"
-            style_css.write_text(css)
-            for icon in ICONS_PATH.glob("*.svg"):
-                shutil.copy(icon, assets)
+            style_css.write_text(self._css)
+        for asset in self._assets:
+            shutil.copy(asset, assets)

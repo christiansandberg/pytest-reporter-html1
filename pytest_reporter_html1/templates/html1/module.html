@@ -1,5 +1,5 @@
 {% for test in tests %}
-  <details class="test {{ test.status.category }}">
+  <details class="test {{ test.status.category }} box">
     <summary class="title test-title">
       {% block test_title scoped %}
       <div class="status badge {{ test.status.category }} {{ test.status.style|join(' ') }}">{{ test.status.word }}</div>
@@ -17,21 +17,21 @@
       <table class="metadata">
         {% block test_metadata scoped %}
         <tr>
-          <td>Started</td>
+          <th>Started</th>
           <td>{{ test.phases|map(attribute='call.start')|first|strftime('%Y-%m-%d %H:%M:%S') }}</td>
         </tr>
         <tr>
-          <td>Ended</td>
+          <th>Ended</th>
           <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime('%Y-%m-%d %H:%M:%S') }}</td>
         </tr>
         <tr>
-          <td>Duration</td>
-          <td>{{ test.phases|map(attribute='report.duration')|sum|timedelta }}</td>
+          <th>Duration</th>
+          <td>{{ test.phases|sum(attribute='report.duration')|timedelta }}</td>
         </tr>
-        {% set markers = test.item.iter_markers()|list %}
+        {% set markers = test.item.iter_markers()|rejectattr('name', '==', 'parametrize')|list %}
         {% if markers %}
           <tr>
-            <td>Markers</td>
+            <th>Markers</th>
             <td>
               {% for marker in markers %}
                 <div class="marker">
@@ -52,7 +52,7 @@
         {% endif %}
         {% if test.item.fixturenames %}
           <tr>
-            <td>Fixtures</td>
+            <th>Fixtures</th>
             <td>
               {% for fixturename in test.item.fixturenames if not fixturename.startswith('_') %}
                 <span class="badge fixturename">
@@ -64,9 +64,9 @@
         {% endif %}
         {% endblock %}
       </table>
-      {% for phase in test.phases if phase.report.longrepr %}
+      {% for phase in test.phases if phase.call.excinfo %}
         <div class="repr">
-          <pre>{{ phase.report.longrepr }}</pre>
+          <pre>{{ phase.call.excinfo.getrepr(style='short', chain=False) }}</pre>
         </div>
       {% endfor %}
       <div class="test-phases">
@@ -79,11 +79,16 @@
               <h4 class="phase-name">{{ phase.report.when|title }}</h4>
             </summary>
             <div class="content">
+              {% if phase.report.longrepr %}
+                <div class="repr">
+                  <pre>{{ phase.report.longrepr }}</pre>
+                </div>
+              {% endif %}
               {% for section, content in sections %}
                 {% set ns.used_sections = ns.used_sections + [section] %}
                 <div class="section">
                   <h5 class="section-title">{{ section }}</h5>
-                  <pre>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</pre>
+                  <pre><samp>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</samp></pre>
                 </div>
               {% endfor %}
             </div>

@@ -1,34 +1,29 @@
 {% extends "html1/base.html" %}
-{% block header %}
-<div class="container">
-  <h1>{{ title|default('Test Report') }}</h1>
-</div>
-{% endblock %}
 {% block content %}
 <div class="container">
   <section class="summary">
     {% block summary %}
     <div class="metadata">
       <table>
-        {% block metadata %}
+        {% block session_metadata %}
         <tr>
-          <td class="key">Started</td>
-          <td class="value">{{ started|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <th>Started</th>
+          <td>{{ started|strftime('%Y-%m-%d %H:%M:%S') }}</td>
         </tr>
         <tr>
-          <td class="key">Ended</td>
-          <td class="value">{{ ended|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <th>Ended</th>
+          <td>{{ ended|strftime('%Y-%m-%d %H:%M:%S') }}</td>
         </tr>
         <tr>
-          <td class="key">Duration</td>
+          <th>Duration</th>
           {% set duration = ended - started %}
-          <td class="value">{{ duration|timedelta }}</td>
+          <td>{{ duration|timedelta }}</td>
         </tr>
         {% if config._metadata %}
           {% for key, value in config._metadata.items() %}
             <tr>
-              <td class="key">{{ key }}</td>
-              <td class="value">
+              <th>{{ key }}</th>
+              <td>
                 {% if value is mapping %}
                   {% for key, value in value.items() %}
                     {{ key }}: {{ value }}<br/>
@@ -73,11 +68,11 @@
           <h2 class="fspath">
             {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
           </h2>
-          <div class="counts">
+          <span class="counts">
           {% for category, tests in tests|groupby('status.category') -%}
             <div title="{{ tests|count }} {{ category }}" class="status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">{{ tests|count }}</div>
           {%- endfor %}
-          </div>
+          </span>
           {% endblock %}
         </summary>
         <div class="content">

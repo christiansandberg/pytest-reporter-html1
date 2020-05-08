@@ -13,7 +13,7 @@
 
 html {
     font-family: Arial, Helvetica, sans-serif;
-    /* font-size: 16px; */
+    font-size: 16px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -47,6 +47,7 @@ li {
 
 pre {
     background-color: rgb(240, 240, 240);
+    font-size: 90%;
     white-space: pre-wrap;
     word-wrap: break-word;
     padding: 0.7em;
@@ -59,6 +60,36 @@ pre {
     .container {
         margin: 1rem 2%;
     }
+}
+
+.badge {
+    font-size: 85%;
+    text-align: center;
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    border: 1px solid black;
+}
+
+@media only screen {
+    .box {
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px #afafaf;
+    }
+
+    .badge {
+        background-color: #78909C;
+        color: white;
+        border: 0;
+    }
+
+    {% for category, (bg, fg) in colors.items() %}
+    .status.{{ category }} {
+        background-color: {{ bg }} !important;
+        color: {{ fg }} !important;
+    }
+    {% endfor %}
 }
 
 
@@ -89,26 +120,23 @@ section {
         display: grid;
         grid-template-columns: auto minmax(15rem, 23rem);
         grid-gap: 1rem;
-        align-items: center;
+        align-items: start;
         /* justify-content: start; */
     }
-
-    .summary > .metadata {
-        align-self: start;
-    }
 }
 
-.metadata td {
+.metadata th, .metadata td {
     padding: 0.2rem;
     vertical-align: top;
+    text-align: left;
 }
 
-.metadata td:first-child {
+.metadata th {
     font-weight: bold;
     padding-right: 0.7rem;
 }
 
-.metadata .value {
+.metadata td {
     word-break: break-all;
 }
 
@@ -175,7 +203,7 @@ details > summary::-webkit-details-marker {
 
 details > summary::before {
     content: " ";
-    background-image: url("{{ icons.arrow }}");
+    background-image: url("{{ 'html1/icons/arrow.svg'|asset }}");
     background-size: contain;
     background-repeat: no-repeat;
     background-position-x: center;
@@ -195,23 +223,6 @@ details[open] > summary::before {
     padding: 0.4rem;
 }
 
-.badge {
-    font-size: 85%;
-    text-align: center;
-    background-color: #78909C;
-    color: white;
-    display: inline-block;
-    padding: 0.2em 0.5em;
-    border-radius: 4px;
-}
-
-{% for category, (bg, fg) in colors.items() %}
-.status.{{ category }} {
-    background-color: {{ bg }} !important;
-    color: {{ fg }} !important;
-}
-{% endfor %}
-
 .file > .title {
     display: grid;
     grid-template-columns: auto auto 1fr;
@@ -228,19 +239,19 @@ details[open] > summary::before {
 .fspath {
     margin: 0;
     font-size: 1.1em;
+    word-break: break-all;
 }
 
-.file > .title > .counts > div {
+.counts {
+    white-space: nowrap;
+}
+
+.counts > div {
     margin-right: 0.3em;
 }
 
-@media only screen {
-    .test {
-        background-color: white;
-        margin-bottom: 0.7rem;
-        border-radius: 4px;
-        box-shadow: 0 1px 2px #afafaf;
-    }
+.test {
+    margin-bottom: 0.7rem;
 }
 
 .status {
