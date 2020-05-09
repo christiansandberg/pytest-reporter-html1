@@ -1,17 +1,22 @@
-from pathlib import Path
-from datetime import datetime, timedelta
-import re
-from inspect import cleandoc
-from base64 import b64encode
-import shutil
 import mimetypes
+import re
+import shutil
+from base64 import b64encode
+from datetime import datetime, timedelta
+from inspect import cleandoc
+from pathlib import Path
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape, evalcontextfilter, Markup
+import htmlmin
 from ansi2html import Ansi2HTMLConverter
 from ansi2html.style import get_styles
 from docutils.core import publish_parts
-import htmlmin
-
+from jinja2 import (
+    Environment,
+    FileSystemLoader,
+    Markup,
+    evalcontextfilter,
+    select_autoescape,
+)
 
 TEMPLATE_PATH = Path(__file__).parent / "templates"
 # category/style: background-color, color
@@ -44,7 +49,6 @@ def pytest_configure(config):
 
 
 class TemplatePlugin:
-
     def __init__(self, config):
         self.self_contained = not config.getoption("--split-report")
         self._css = None
@@ -84,9 +88,7 @@ class TemplatePlugin:
         if self.self_contained:
             mimetype, _ = mimetypes.guess_type(src)
             content = path.read_bytes()
-            return (
-                "data:" + mimetype + ";base64," + b64encode(content).decode("utf-8")
-            )
+            return "data:" + mimetype + ";base64," + b64encode(content).decode("utf-8")
         else:
             self._assets.append(path)
             return path.name
