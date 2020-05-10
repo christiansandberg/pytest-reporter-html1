@@ -66,7 +66,9 @@
         <summary class="title">
           {% block module_title scoped %}
           <h2 class="fspath">
+            {% block module_name scoped %}
             {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
+            {% endblock %}
           </h2>
           <span class="counts">
           {% for category, tests in tests|groupby('status.category') -%}
