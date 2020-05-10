@@ -4,7 +4,9 @@ import shutil
 from base64 import b64encode
 from datetime import datetime, timedelta
 from inspect import cleandoc
+import os.path
 from pathlib import Path
+import warnings
 
 import htmlmin
 from ansi2html import Ansi2HTMLConverter
@@ -13,6 +15,7 @@ from docutils.core import publish_parts
 from jinja2 import (
     Environment,
     FileSystemLoader,
+    TemplateNotFound,
     Markup,
     evalcontextfilter,
     select_autoescape,
@@ -40,7 +43,7 @@ def pytest_addoption(parser):
     group.addoption(
         "--split-report",
         action="store_true",
-        help="store CSS and image files under 'assets' directory.",
+        help="store CSS and image files separately from the HTML.",
     )
 
 
@@ -53,11 +56,13 @@ class TemplatePlugin:
         self.self_contained = not config.getoption("--split-report")
         self._css = None
         self._assets = []
+        self._dirs = []
 
     def pytest_reporter_loader(self, dirs, config):
+        self._dirs = dirs + [str(TEMPLATE_PATH)]
         conv = Ansi2HTMLConverter(escaped=False)
         self.env = env = Environment(
-            loader=FileSystemLoader(dirs + [str(TEMPLATE_PATH)]),
+            loader=FileSystemLoader(self._dirs),
             autoescape=select_autoescape(["html", "htm", "xml"]),
         )
         env.globals["get_ansi_styles"] = get_styles
@@ -84,13 +89,23 @@ class TemplatePlugin:
             return Markup('<link rel="stylesheet" type="text/css" href="html1.css">')
 
     def _assetfilter(self, src):
-        path = TEMPLATE_PATH / src
+        path = None
+        for parent in [".", *self._dirs]:
+            maybe_file = Path(parent) / src
+            if maybe_file.is_file():
+                path = maybe_file
+                break
+        if not path:
+            warnings.warn("Could not find file '%s'" % src)
+            path = src
+
         if self.self_contained:
             mimetype, _ = mimetypes.guess_type(src)
             content = path.read_bytes()
             return "data:" + mimetype + ";base64," + b64encode(content).decode("utf-8")
         else:
             self._assets.append(path)
+            # Put all assets in the same directory as the HTML and CSS
             return path.name
 
     def pytest_reporter_render(self, template_name, dirs, context):
