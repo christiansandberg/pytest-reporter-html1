@@ -18,11 +18,16 @@ def test_error(broken):
     assert True
 
 
-@pytest.mark.skip
-def test_skipped():
+@pytest.mark.xfail(reason="Always asserts False")
+def test_xfailed():
     assert False
 
 
-@pytest.mark.flaky(reruns=1)
-def test_rerun():
+@pytest.mark.xfail
+def test_xpassed():
+    assert True
+
+
+@pytest.mark.skip
+def test_skipped():
     assert False
