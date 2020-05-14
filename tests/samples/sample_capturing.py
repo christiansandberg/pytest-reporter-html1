@@ -1,8 +1,6 @@
 import logging
 import sys
 
-import pytest
-
 
 def test_stdout():
     print("STDOUT")

@@ -4,7 +4,6 @@ import shutil
 from base64 import b64encode
 from datetime import datetime, timedelta
 from inspect import cleandoc
-import os.path
 from pathlib import Path
 import warnings
 
@@ -17,7 +16,6 @@ from jinja2 import (
     FileSystemLoader,
     TemplateNotFound,
     Markup,
-    evalcontextfilter,
     select_autoescape,
 )
 

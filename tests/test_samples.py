@@ -1,7 +1,3 @@
-import pytest
-import _pytest
-
-
 pytest_plugins = ["pytester"]
 
 
