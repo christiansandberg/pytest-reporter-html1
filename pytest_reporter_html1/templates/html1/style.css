@@ -47,10 +47,10 @@ li {
 
 pre {
     background-color: rgb(240, 240, 240);
-    font-size: 90%;
+    font-size: 80%;
     white-space: pre-wrap;
     word-wrap: break-word;
-    padding: 0.7em;
+    padding: 0.7rem;
     margin: 0.7rem 0;
     border: 1px solid rgb(199, 199, 199);
     border-radius: 4px;
@@ -116,7 +116,7 @@ section {
 **********************************************/
 
 @media only screen and (min-width: 1024px) {
-    .summary {
+    #summary {
         display: grid;
         grid-template-columns: auto minmax(15rem, 23rem);
         grid-gap: 1rem;
@@ -170,7 +170,7 @@ section {
  WARNINGS
 **********************************************/
 
-.warnings {
+#warnings {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 0.7rem;
@@ -201,7 +201,7 @@ details > summary::-webkit-details-marker {
     display: none;
 }
 
-details > summary::before {
+.title::before {
     content: " ";
     background-image: url("{{ 'html1/icons/arrow.svg'|asset }}");
     background-size: contain;
@@ -211,11 +211,11 @@ details > summary::before {
     height: 0.7em;
     display: inline-block;
     justify-self: end;
-    transform: rotate(0deg);
+    /* transform: rotate(0deg); */
     transition: transform ease-out 0.2s;
 }
 
-details[open] > summary::before {
+details[open] > summary > ::before {
     transform: rotate(90deg);
 }
 
@@ -223,7 +223,7 @@ details[open] > summary::before {
     padding: 0.4rem;
 }
 
-.file > .title {
+.file-title {
     display: grid;
     grid-template-columns: auto auto 1fr;
     grid-gap: 0.7rem;
@@ -246,7 +246,8 @@ details[open] > summary::before {
     white-space: nowrap;
 }
 
-.counts > div {
+.counts > span {
+    display: inline-block;
     margin-right: 0.3em;
 }
 
@@ -260,7 +261,7 @@ details[open] > summary::before {
 
 .test-title {
     display: grid;
-    grid-template-columns: auto 4.5em 1fr auto;
+    grid-template-columns: auto 5em 1fr auto;
     grid-gap: 0.7rem;
     align-items: center;
     /* justify-content: start; */
@@ -307,12 +308,11 @@ details[open] > summary::before {
 
 .test-phases {
     border-left: 1px solid #b1b1b1;
-    margin-left: 1rem;
+    margin-left: 0.7rem;
 }
 
 .phase {
     position: relative;
-    /* padding: 0.7rem 0 0.7rem 1rem; */
     padding-left: 0.7rem;
     margin-bottom: 0;
     border-radius: 0;

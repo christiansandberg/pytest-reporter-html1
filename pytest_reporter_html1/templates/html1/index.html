@@ -1,7 +1,7 @@
 {% extends "html1/base.html" %}
 {% block content %}
 <div class="container">
-  <section class="summary">
+  <section id="summary">
     {% block summary %}
     <div class="metadata">
       <table>
@@ -52,30 +52,32 @@
     {% endblock %}
   </section>
   {% if warnings %}
-    <section class="warnings">
+    <section id="warnings">
       {% for warning in warnings %}
         <div class="status badge warning">WARNING</div>
         <div>{{ warning.filename }}:{{ warning.lineno }}<br>{{ warning.message }}</div>
       {% endfor %}
     </section>
   {% endif %}
-  <section class="test-files">
+  <section id="test-files">
     {% for fspath, tests in tests|groupby('item.fspath') %}
       {% set item = tests|map(attribute='item.parent')|first %}
       <details class="file">
-        <summary class="title">
-          {% block module_title scoped %}
-          <h2 class="fspath">
-            {% block module_name scoped %}
-            {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
+        <summary>
+          <div class="title file-title">
+            {% block module_title scoped %}
+            <h2 class="fspath">
+              {% block module_name scoped %}
+              {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
+              {% endblock %}
+            </h2>
+            <div class="counts">
+            {% for category, tests in tests|groupby('status.category') -%}
+              <span title="{{ tests|count }} {{ category }}" class="count status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">{{ tests|count }}</span>
+            {%- endfor %}
+            </div>
             {% endblock %}
-          </h2>
-          <span class="counts">
-          {% for category, tests in tests|groupby('status.category') -%}
-            <div title="{{ tests|count }} {{ category }}" class="status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">{{ tests|count }}</div>
-          {%- endfor %}
-          </span>
-          {% endblock %}
+          </div>
         </summary>
         <div class="content">
           {% block module_content scoped %}

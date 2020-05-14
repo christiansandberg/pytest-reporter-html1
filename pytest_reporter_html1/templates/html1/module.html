@@ -1,11 +1,13 @@
 {% for test in tests %}
   <details class="test {{ test.status.category }} box">
-    <summary class="title test-title">
-      {% block test_title scoped %}
-      <div class="status badge {{ test.status.category }} {{ test.status.style|join(' ') }}">{{ test.status.word }}</div>
-      <h3 class="test-name">{% block test_name scoped %}{{ test.item.name }}{% endblock %}</h3>
-      <div class="duration">{{ test.phases|sum('report.duration')|timedelta }}</div>
-      {% endblock %}
+    <summary>
+      <div class="title test-title">
+        {% block test_title scoped %}
+        <div class="status badge {{ test.status.category }} {{ test.status.style|join(' ') }}">{{ test.status.word }}</div>
+        <h3 class="test-name">{% block test_name scoped %}{{ test.item.name }}{% endblock %}</h3>
+        <div class="duration">{{ test.phases|sum('report.duration')|timedelta }}</div>
+        {% endblock %}
+      </div>
     </summary>
     <div class="content">
       {% block test_content scoped %}
@@ -74,9 +76,11 @@
         {% for phase in test.phases %}
           {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
           <details class="phase {{ phase.report.when }} {{ phase.status.category }}">
-            <summary class="title">
-              <div class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></div>
-              <h4 class="phase-name">{{ phase.report.when|title }}</h4>
+            <summary>
+              <div class="title">
+                <div class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></div>
+                <h4 class="phase-name">{{ phase.report.when|title }}</h4>
+              </div>
             </summary>
             <div class="content">
               {% if phase.report.longrepr %}
