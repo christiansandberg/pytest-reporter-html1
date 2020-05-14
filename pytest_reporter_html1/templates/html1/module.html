@@ -1,3 +1,4 @@
+{% set ns = namespace(used_sections=[]) %}
 {% for test in tests %}
   <details class="test {{ test.status.category }} box">
     <summary>
@@ -72,9 +73,8 @@
         </div>
       {% endfor %}
       <div class="test-phases">
-        {% set ns = namespace(used_sections=[]) %}
         {% for phase in test.phases %}
-          {% set sections = phase.report.sections|rejectattr(0, 'in', ns.used_sections)|list %}
+          {% set sections = phase.report.sections|rejectattr(1, 'in', ns.used_sections)|list %}
           <details class="phase {{ phase.report.when }} {{ phase.status.category }}">
             <summary>
               <div class="title">
@@ -89,7 +89,7 @@
                 </div>
               {% endif %}
               {% for section, content in sections %}
-                {% set ns.used_sections = ns.used_sections + [section] %}
+                {% set ns.used_sections = ns.used_sections + [content] %}
                 <div class="section">
                   <h5 class="section-title">{{ section }}</h5>
                   <pre><samp>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</samp></pre>
