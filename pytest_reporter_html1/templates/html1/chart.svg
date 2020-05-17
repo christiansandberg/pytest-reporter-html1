@@ -2,6 +2,7 @@
   {% set ns = namespace(sum=0) %}
   {% set total = tests|count %}
   {% set r = 16 %}
+  {% set spacing = 0.5 %}
   {% set C = 2 * 3.14159 * r %}
   {% for category, sub_tests in tests|groupby('status.category') %}
     {% set count = sub_tests|count %}
@@ -9,7 +10,7 @@
     {% set color = colors[category] %}
     <circle
       class="donut-segment"
-      stroke-dasharray="{{ L }} {{ C - L }}"
+      stroke-dasharray="{{ L - spacing }} {{ C - L + spacing }}"
       stroke-dashoffset="{{ C - ns.sum + (C / 4) }}"
       cx="21"
       cy="21"
@@ -18,7 +19,7 @@
       {% if color %}
       stroke="{{ color[0] }}"
       {% endif %}
-      stroke-width="3">
+      stroke-width="4">
     </circle>
     {% set ns.sum = ns.sum + L %}
   {% endfor %}

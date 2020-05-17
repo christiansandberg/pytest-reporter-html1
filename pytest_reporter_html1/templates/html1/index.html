@@ -1,7 +1,7 @@
 {% extends "html1/base.html" %}
 {% block content %}
-<div class="container">
-  <section id="summary">
+<section id="summary">
+  <div class="container">
     {% block summary %}
     <div class="metadata">
       <table>
@@ -12,7 +12,13 @@
         </tr>
         <tr>
           <th>Ended</th>
-          <td>{{ ended|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <td>
+            {% if ended %}
+              {{ ended|strftime('%Y-%m-%d %H:%M:%S') }}
+            {% else %}
+              <i>In progress...</i>
+            {% endif %}
+          </td>
         </tr>
         <tr>
           <th>Duration</th>
@@ -50,16 +56,20 @@
       </div>
     </div>
     {% endblock %}
-  </section>
-  {% if warnings %}
-    <section id="warnings">
+  </div>
+</section>
+{% if warnings %}
+  <section id="warnings">
+    <div class="container">
       {% for warning in warnings %}
         <div class="status badge warning">WARNING</div>
         <div>{{ warning.filename }}:{{ warning.lineno }}<br>{{ warning.message }}</div>
       {% endfor %}
-    </section>
-  {% endif %}
-  <section id="test-files">
+    </div>
+  </section>
+{% endif %}
+<section id="test-files">
+  <div class="container">
     {% for fspath, tests in tests|groupby('item.fspath') %}
       {% set item = tests|map(attribute='item.parent')|first %}
       <details class="file">
@@ -79,13 +89,13 @@
             {% endblock %}
           </div>
         </summary>
-        <div class="content">
+        <div class="content box">
           {% block module_content scoped %}
             {% include "html1/module.html" %}
           {% endblock %}
         </div>
       </details>
     {% endfor %}
-  </section>
-</div>
+  </div>
+</section>
 {% endblock %}

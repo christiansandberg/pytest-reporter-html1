@@ -12,11 +12,11 @@ A basic HTML report for Pytest using `Jinja2`_ template engine.
 Features
 --------
 
-* Expand and retract sections as needed
-* Tests organized by files
+* Overview of files, tests, and phases with expandable sections
+* Fairly mobile friendly
 * Complies with Jenkins default CSP policy (with ``--split-report``)
 * reStructuredText support in test function documentation
-* Minified content
+* Support for pytest-metadata and pytest-rerunfailures
 * May be used as a base template for customization
 
 .. image:: https://raw.githubusercontent.com/christiansandberg/pytest-reporter-html1/develop/screenshot.png

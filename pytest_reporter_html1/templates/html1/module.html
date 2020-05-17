@@ -1,6 +1,6 @@
 {% set ns = namespace(used_sections=[]) %}
 {% for test in tests %}
-  <details class="test {{ test.status.category }} box">
+  <details class="test {{ test.status.category }}">
     <summary>
       <div class="title test-title">
         {% block test_title scoped %}
@@ -78,14 +78,16 @@
           <details class="phase {{ phase.report.when }} {{ phase.status.category }}">
             <summary>
               <div class="title">
-                <div class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></div>
+                {% if phase.status.category %}
+                  <div class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></div>
+                {% endif %}
                 <h4 class="phase-name">{{ phase.report.when|title }}</h4>
               </div>
             </summary>
             <div class="content">
               {% if phase.report.longrepr %}
                 <div class="repr">
-                  <pre>{{ phase.report.longrepr }}</pre>
+                  <pre>{{ phase.report.longreprtext }}</pre>
                 </div>
               {% endif %}
               {% for section, content in sections %}
