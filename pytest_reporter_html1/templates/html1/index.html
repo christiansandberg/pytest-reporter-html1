@@ -20,11 +20,13 @@
             {% endif %}
           </td>
         </tr>
-        <tr>
-          <th>Duration</th>
-          {% set duration = ended - started %}
-          <td>{{ duration|timedelta }}</td>
-        </tr>
+        {% if ended %}
+          <tr>
+            <th>Duration</th>
+            {% set duration = ended - started %}
+            <td>{{ duration|timedelta }}</td>
+          </tr>
+        {% endif %}
         {% if config._metadata %}
           {% for key, value in config._metadata.items() %}
             <tr>
