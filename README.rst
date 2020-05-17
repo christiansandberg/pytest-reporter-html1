@@ -19,7 +19,7 @@ Features
 * Support for pytest-metadata and pytest-rerunfailures
 * May be used as a base template for customization
 
-.. image:: https://raw.githubusercontent.com/christiansandberg/pytest-reporter-html1/develop/screenshot.png
+.. image:: https://raw.githubusercontent.com/christiansandberg/pytest-reporter-html1/master/screenshot.png
     :alt: Screenshot
 
 
