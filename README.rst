@@ -21,7 +21,6 @@ Features
 
 .. image:: https://raw.githubusercontent.com/christiansandberg/pytest-reporter-html1/develop/screenshot.png
     :alt: Screenshot
-    :scale: 50 %
 
 
 Installation
