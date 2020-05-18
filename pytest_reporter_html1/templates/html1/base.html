@@ -6,9 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title|default('Test Report') }}</title>
   {% filter css %}
-    {% block style %}
-    {% include "html1/style.css" %}
-    {% endblock %}
+    {% filter css_minify %}
+      {% block style %}
+      {% include "html1/normalize.css" %}
+      {% include "html1/style.css" %}
+      {% endblock %}
+    {% endfilter %}
   {% endfilter %}
   </style>
   <script>

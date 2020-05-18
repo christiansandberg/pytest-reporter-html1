@@ -49,6 +49,12 @@ def pytest_configure(config):
     config.pluginmanager.register(TemplatePlugin(config))
 
 
+def css_minify(s):
+    s = re.sub(r"\s+", " ", s)
+    s = re.sub(r"/\*.*?\*/", "", s)
+    return s
+
+
 class TemplatePlugin:
     def __init__(self, config):
         self.self_contained = not config.getoption("--split-report")
@@ -73,7 +79,7 @@ class TemplatePlugin:
         env.filters["ansi"] = lambda s: conv.convert(s, full=False)
         env.filters["cleandoc"] = cleandoc
         env.filters["rst"] = lambda s: publish_parts(source=s, writer_name="html5")["body"]
-        env.filters["css_minify"] = lambda s: re.sub(r"\s+", " ", s)
+        env.filters["css_minify"] = css_minify
         return env
 
     def pytest_reporter_context(self, context, config):
