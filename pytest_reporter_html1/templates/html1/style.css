@@ -98,7 +98,7 @@ details > summary:focus {
 }
 
 details > summary:hover {
-    background-color: #ECEFF1;
+    background-color: #f1f1f1;
 }
 
 details > summary::-webkit-details-marker {
