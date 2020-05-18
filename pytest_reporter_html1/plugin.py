@@ -19,6 +19,8 @@ from jinja2 import (
     select_autoescape,
 )
 
+from . import __version__
+
 TEMPLATE_PATH = Path(__file__).parent / "templates"
 # category/style: background-color, color
 COLORS = {
@@ -71,6 +73,7 @@ class TemplatePlugin:
         )
         env.globals["get_ansi_styles"] = get_styles
         env.globals["self_contained"] = self.self_contained
+        env.globals["__version__"] = __version__
         env.filters["css"] = self._cssfilter
         env.filters["asset"] = self._assetfilter
         env.filters["repr"] = repr
