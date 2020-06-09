@@ -77,6 +77,7 @@ class TemplatePlugin:
         env.filters["css"] = self._cssfilter
         env.filters["asset"] = self._assetfilter
         env.filters["repr"] = repr
+        env.filters["id"] = id
         env.filters["strftime"] = lambda ts, fmt: datetime.fromtimestamp(ts).strftime(fmt)
         env.filters["timedelta"] = lambda ts: timedelta(seconds=ts)
         env.filters["ansi"] = lambda s: conv.convert(s, full=False)

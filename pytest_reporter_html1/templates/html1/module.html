@@ -74,7 +74,6 @@
       {% endfor %}
       <div class="test-phases">
         {% for phase in test.phases %}
-          {% set sections = phase.report.sections|rejectattr(1, 'in', ns.used_sections)|list %}
           <details class="phase {{ phase.report.when }} {{ phase.status.category }}">
             <summary>
               <div class="title">
@@ -90,12 +89,19 @@
                   <pre>{{ phase.report.longreprtext }}</pre>
                 </div>
               {% endif %}
-              {% for section, content in sections %}
-                {% set ns.used_sections = ns.used_sections + [content] %}
-                <div class="section">
-                  <h5 class="section-title">{{ section }}</h5>
-                  <pre><samp>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</samp></pre>
-                </div>
+              {% for section, content in phase.report.sections %}
+                {#
+                  Need to remember which sections have already been reported as
+                  all previous sections for a single item get included in the next call.
+                #}
+                {% set section_id = content|id %}
+                {% if section_id not in ns.used_sections %}
+                  {% set ns.used_sections = ns.used_sections + [section_id] %}
+                  <div class="section">
+                    <h5 class="section-title">{{ section }}</h5>
+                    <pre><samp>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</samp></pre>
+                  </div>
+                {% endif %}
               {% endfor %}
             </div>
           </details>
