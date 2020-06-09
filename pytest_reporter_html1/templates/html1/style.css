@@ -311,7 +311,7 @@ section {
 **********************************************/
 
 .test-phases {
-    border-left: 1px solid #b1b1b1;
+    border-left: 2px solid #cccccc;
     margin-left: 0.7rem;
 }
 
@@ -325,7 +325,7 @@ section {
 .phase .status {
     position: absolute;
     display: inline-block;
-    left: 0;
+    left: -1px;
     margin-top: -0.2em;
     padding: 0;
     transform: translateX(-50%);
