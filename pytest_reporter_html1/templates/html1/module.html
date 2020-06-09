@@ -31,6 +31,12 @@
           <th>Duration</th>
           <td>{{ test.phases|sum(attribute='report.duration')|timedelta }}</td>
         </tr>
+        {% for name, value in test.item.user_properties %}
+          <tr>
+            <th>{{ name|title }}</th>
+            <td>{{ value|escape|urlize }}</td>
+          </tr>
+        {% endfor %}
         {% set markers = test.item.iter_markers()|rejectattr('name', '==', 'parametrize')|list %}
         {% if markers %}
           <tr>

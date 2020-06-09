@@ -23,3 +23,10 @@ def test_with_documentation():
     .. _`pytest`: https://github.com/pytest-dev/pytest
     """
     pass
+
+
+def test_user_properties(record_property):
+    record_property("string", "Some string value")
+    record_property("integer", 123)
+    record_property("xml", "<blink>Blink!</blink>")
+    record_property("url", "https://github.com/christiansandberg/pytest-reporter-html1")
