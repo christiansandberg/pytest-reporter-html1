@@ -311,7 +311,7 @@ section {
 **********************************************/
 
 .test-phases {
-    border-left: 2px solid #cccccc;
+    border-left: 2px solid #dddddd;
     margin-left: 0.7rem;
 }
 
@@ -326,15 +326,31 @@ section {
     position: absolute;
     display: inline-block;
     left: -1px;
-    margin-top: -0.2em;
+    margin-top: -0.3em;
     padding: 0;
     transform: translateX(-50%);
-    width: 1.2em;
-    height: 1.2em;
+    width: 1.4em;
+    height: 1.4em;
     text-align: center;
     border-radius: 500%;
     border: 2px solid white;
     background-color: #cccccc;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.phase .status.passed,
+.phase .status.xfailed {
+    background-image: url("{{ 'html1/icons/ok.svg'|asset }}");
+}
+
+.phase .status.failed,
+.phase .status.error,
+.phase .status.xpassed,
+.phase .status.skipped,
+.phase .status.rerun {
+    background-image: url("{{ 'html1/icons/nok.svg'|asset }}");
 }
 
 .phase-name {
