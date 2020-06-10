@@ -80,7 +80,7 @@
       {% endfor %}
       <div class="test-phases">
         {% for phase in test.phases %}
-          <details class="phase {{ phase.report.when }} {{ phase.status.category }}">
+          <details class="phase {{ phase.report.when }} {{ phase.status.category }}" {{ 'open' if phase.status.category not in ('', 'passed') }}>
             <summary>
               <div class="title">
                 {% if phase.status.category %}
