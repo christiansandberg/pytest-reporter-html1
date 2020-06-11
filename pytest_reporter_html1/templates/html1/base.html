@@ -14,11 +14,11 @@
       {% endblock %}
     {% endfilter %}
   {% endfilter %}
-  </style>
-  <script>
+  {% filter script %}
     {% block script %}
+    {% include "html1/main.js" %}
     {% endblock %}
-  </script>
+  {% endfilter %}
   {% endblock %}
 </head>
 <body>

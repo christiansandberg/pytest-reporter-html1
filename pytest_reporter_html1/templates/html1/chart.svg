@@ -9,7 +9,7 @@
     {% set L = count / total * C %}
     {% set color = colors[category] %}
     <circle
-      class="donut-segment"
+      class="donut-segment {{ category }}"
       stroke-dasharray="{{ L - spacing }} {{ C - L + spacing }}"
       stroke-dashoffset="{{ C - ns.sum + (C / 4) }}"
       cx="21"

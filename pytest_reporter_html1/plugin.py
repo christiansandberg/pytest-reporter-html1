@@ -61,6 +61,7 @@ class TemplatePlugin:
     def __init__(self, config):
         self.self_contained = not config.getoption("--split-report")
         self._css = None
+        self._script = None
         self._assets = []
         self._dirs = []
 
@@ -75,6 +76,7 @@ class TemplatePlugin:
         env.globals["self_contained"] = self.self_contained
         env.globals["__version__"] = __version__
         env.filters["css"] = self._cssfilter
+        env.filters["script"] = self._scriptfilter
         env.filters["asset"] = self._assetfilter
         env.filters["repr"] = repr
         env.filters["id"] = id
@@ -96,6 +98,13 @@ class TemplatePlugin:
         else:
             self._css = css
             return Markup('<link rel="stylesheet" type="text/css" href="html1.css">')
+
+    def _scriptfilter(self, script):
+        if self.self_contained:
+            return Markup("<script>") + script + Markup("</script>")
+        else:
+            self._script = script
+            return Markup('<script src="main.js"></script>')
 
     def _assetfilter(self, src):
         path = None
@@ -132,5 +141,8 @@ class TemplatePlugin:
         if self._css:
             style_css = assets / "html1.css"
             style_css.write_text(self._css)
+        if self._script:
+            script = assets / "main.js"
+            script.write_test(self._script)
         for asset in self._assets:
             shutil.copy(asset, assets)

@@ -65,6 +65,10 @@ a:hover {
     border: 1px solid black;
 }
 
+.status {
+    font-weight: bold;
+}
+
 @media only screen {
     .box {
         background-color: white;
@@ -206,6 +210,24 @@ section {
     align-items: center;
 }
 
+.category-select {
+    cursor: pointer;
+}
+
+.category-select.hidden,
+.legend .badge.hidden,
+.donut-segment.hidden {
+    opacity: 0.3;
+}
+
+.test.hidden {
+    display: none;
+}
+
+.counts > span.hidden {
+    display: none;
+}
+
 
 /**********************************************
  WARNINGS
@@ -257,10 +279,6 @@ section {
 
 .test:not(:last-child) {
     border-bottom: 1px solid #dddddd;
-}
-
-.status {
-    font-weight: bold;
 }
 
 .test-title {

@@ -53,7 +53,7 @@
           <span class="status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">
             {{ tests|count }}
           </span>
-          <span>{{ category }}</span>
+          <span class="category-select" data-category="{{ category }}">{{ category }}</span>
         {% endfor %}
       </div>
     </div>
