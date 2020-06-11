@@ -296,7 +296,7 @@ section {
 }
 
 .marker {
-    display: block;
+    display: inline-block;
     color: #5e5e5e;
     margin: 0 0.2rem 0.2rem 0;
 }

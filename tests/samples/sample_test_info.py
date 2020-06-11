@@ -6,6 +6,12 @@ def test_parametrized(i):
     assert i < 2
 
 
+@pytest.mark.mark1
+@pytest.mark.mark_with_args("positional", keyword=1234)
+def test_markers():
+    pass
+
+
 def test_with_documentation():
     """This is a documentation.
 

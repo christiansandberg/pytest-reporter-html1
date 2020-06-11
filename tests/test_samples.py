@@ -7,15 +7,22 @@ pytest_plugins = ["pytester"]
 
 
 def test_sample_report(testdir, pytestconfig):
-    testdir.makeini("[pytest]\npython_files=sample_*.py\n")
+    testdir.makeini([
+        "[pytest]",
+        "python_files=sample_*.py",
+        "markers =",
+        "   mark1",
+        "   mark_with_args",
+    ])
     testdir.copy_example("samples")
 
     report = "{}/report/report.html".format(pytestconfig.rootdir)
-    testdir.runpytest(
+    result = testdir.runpytest(
         "--log-level=DEBUG",
         "--template=html1/index.html",
         "--report=" + report
     )
+    assert result.ret == 1
     with open(report) as fp:
         soup = BeautifulSoup(fp, "html.parser")
 
