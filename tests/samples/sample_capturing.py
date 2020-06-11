@@ -1,9 +1,17 @@
 import logging
 import sys
+import pytest
 
 
-def test_stdout():
-    print("STDOUT")
+@pytest.fixture
+def print_example():
+    print("Print from setup")
+    yield
+    print("Print from teardown")
+
+
+def test_stdout(print_example):
+    print("\n".join("asd" * 40 for _ in range(100)))
 
 
 def test_stderr():
