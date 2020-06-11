@@ -73,14 +73,14 @@
 <section id="test-files">
   <div class="container">
     {% for fspath, tests in tests|groupby('item.fspath') %}
-      {% set item = tests|map(attribute='item.parent')|first %}
+      {% set first_item = tests|map(attribute='item')|first %}
       <details class="file">
         <summary>
           <div class="title file-title">
             {% block module_title scoped %}
             <h2 class="fspath">
               {% block module_name scoped %}
-              {{ fspath|replace(config.rootdir, '')|replace('\\', '/') }}
+              {{ first_item.nodeid.split('::')|first }}
               {% endblock %}
             </h2>
             <div class="counts">
