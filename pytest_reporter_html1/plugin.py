@@ -88,6 +88,7 @@ class TemplatePlugin:
 
     def pytest_reporter_context(self, context, config):
         context.setdefault("colors", COLORS)
+        context.setdefault("time_format", "%Y-%m-%d %H:%M:%S")
 
     def _cssfilter(self, css):
         if self.self_contained:

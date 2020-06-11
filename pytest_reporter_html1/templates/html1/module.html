@@ -25,11 +25,11 @@
         {% block test_metadata scoped %}
         <tr>
           <th>Started</th>
-          <td>{{ test.phases|map(attribute='call.start')|first|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <td>{{ test.phases|map(attribute='call.start')|first|strftime(time_format) }}</td>
         </tr>
         <tr>
           <th>Ended</th>
-          <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime(time_format) }}</td>
         </tr>
         <tr>
           <th>Duration</th>

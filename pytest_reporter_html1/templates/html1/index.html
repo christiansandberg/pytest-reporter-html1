@@ -8,13 +8,13 @@
         {% block session_metadata %}
         <tr>
           <th>Started</th>
-          <td>{{ started|strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <td>{{ started|strftime(time_format) }}</td>
         </tr>
         <tr>
           <th>Ended</th>
           <td>
             {% if ended %}
-              {{ ended|strftime('%Y-%m-%d %H:%M:%S') }}
+              {{ ended|strftime(time_format) }}
             {% else %}
               <i>In progress...</i>
             {% endif %}
