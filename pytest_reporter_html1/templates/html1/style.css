@@ -129,6 +129,13 @@ details[open] > summary > ::before {
     margin-bottom: 0.7rem;
 }
 
+.duration {
+    display: none;
+    font-size: 85%;
+    font-weight: normal;
+    color: #888888;
+}
+
 
 /**********************************************
  HEADER
@@ -220,12 +227,12 @@ section {
 
 
 /**********************************************
- TESTS
+ MODULES
 **********************************************/
 
 .file-title {
     display: grid;
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: auto auto 1fr auto;
     grid-gap: 0.7rem;
     align-items: center;
 }
@@ -251,6 +258,11 @@ section {
     margin-right: 0.3em;
 }
 
+
+/**********************************************
+ TESTS
+**********************************************/
+
 .test > summary {
     border-radius: 0;
 }
@@ -269,13 +281,6 @@ section {
     grid-gap: 0.7rem;
     align-items: center;
     /* justify-content: start; */
-}
-
-.duration {
-    display: none;
-    font-size: 85%;
-    font-weight: normal;
-    color: #707070;
 }
 
 @media only screen and (min-width: 500px) {

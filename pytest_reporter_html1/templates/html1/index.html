@@ -88,6 +88,9 @@
               <span title="{{ tests|count }} {{ category }}" class="count status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">{{ tests|count }}</span>
             {%- endfor %}
             </div>
+            <div class="duration">
+              {{ tests|map(attribute='phases')|map('sum', 'report.duration')|sum|timedelta }}
+            </div>
             {% endblock %}
           </div>
         </summary>
