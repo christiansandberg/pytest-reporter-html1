@@ -34,7 +34,7 @@
               <td>
                 {% if value is mapping %}
                   {% for key, value in value.items() %}
-                    {{ key }}: {{ value }}<br/>
+                    {{ key }}: {{ value }}<br>
                   {% endfor %}
                 {% else %}
                   {{ value|urlize }}

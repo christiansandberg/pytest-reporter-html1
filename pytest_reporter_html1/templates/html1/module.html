@@ -7,7 +7,12 @@
         <div class="status badge {{ test.status.category }} {{ test.status.style|join(' ') }}">{{ test.status.word }}</div>
         <h3 class="test-name">
           {% block test_name scoped %}
-          {{ test.item.nodeid.split('::')[1:]|join('::') }}
+          {% set name = test.item.nodeid.split('::')[1:]|join('::') %}
+          {% set funcname, _, params = name.partition('[') %}
+          <span class="funcname">{{ funcname }}</span>
+          {%- if params -%}
+            <span class="params">[{{ params }}</span>
+          {% endif %}
           {% endblock %}
         </h3>
         <div class="duration">{{ test.phases|sum('report.duration')|timedelta }}</div>
@@ -79,7 +84,7 @@
       </table>
       {% for phase in test.phases if phase.call.excinfo %}
         <div class="repr">
-          <pre>{{ phase.call.excinfo.getrepr(style='short', chain=False) }}</pre>
+          <pre>{{ phase.call.excinfo.getrepr(style='no', chain=False) }}</pre>
         </div>
       {% endfor %}
       <div class="test-phases">
