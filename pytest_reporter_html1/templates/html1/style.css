@@ -32,6 +32,7 @@ body {
 }
 
 pre {
+    overflow-x: auto;
     background-color: #f3f3f3;
     font-size: 87.5%;
     white-space: pre-wrap;
@@ -40,6 +41,13 @@ pre {
     margin: 0.75rem 0;
     border: 1px solid #c7c7c7;
     border-radius: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+    pre {
+        white-space: normal;
+        word-wrap: normal;
+    }
 }
 
 a {
@@ -280,7 +288,7 @@ section {
 }
 
 .test > .content {
-    padding: 0 0.75rem 0.75rem;
+    padding: 0.75rem;
 }
 
 .status {
