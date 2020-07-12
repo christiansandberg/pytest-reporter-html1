@@ -26,20 +26,28 @@ body {
 
 @media only screen {
     body {
-        background-color: #f8f8f8;
+        background-color: #f3f3f3;
         color: #222222;
     }
 }
 
 pre {
+    overflow-x: auto;
     background-color: #f3f3f3;
     font-size: 87.5%;
     white-space: pre-wrap;
     word-wrap: break-word;
-    padding: 0.7rem;
-    margin: 0.7rem 0;
+    padding: 0.75rem;
+    margin: 0.75rem 0;
     border: 1px solid #c7c7c7;
     border-radius: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+    pre {
+        white-space: normal;
+        word-wrap: normal;
+    }
 }
 
 a {
@@ -52,7 +60,7 @@ a:hover {
 
 @media only screen {
     .container {
-        margin: 1rem 2%;
+        margin: 0 2%;
     }
 }
 
@@ -84,8 +92,8 @@ a:hover {
 
     {% for category, (bg, fg) in colors.items() %}
     .status.{{ category }} {
-        background-color: {{ bg }} !important;
-        color: {{ fg }} !important;
+        background-color: {{ bg }};
+        color: {{ fg }};
     }
     {% endfor %}
 }
@@ -94,16 +102,11 @@ details > summary {
     display: block;
     cursor: pointer;
     list-style: none;
-    padding: 0.4rem;
     border-radius: 4px;
 }
 
 details > summary:focus {
     outline: 0;
-}
-
-details > summary:hover {
-    background-color: #f1f1f1;
 }
 
 details > summary::-webkit-details-marker {
@@ -116,8 +119,8 @@ details > summary::-webkit-details-marker {
     background-size: contain;
     background-repeat: no-repeat;
     background-position-x: center;
-    width: 0.7em;
-    height: 0.7em;
+    width: 0.75rem;
+    height: 0.75rem;
     display: inline-block;
     justify-self: end;
     /* transform: rotate(0deg); */
@@ -128,9 +131,11 @@ details[open] > summary > ::before {
     transform: rotate(90deg);
 }
 
-.content {
-    padding: 0.4rem;
-    margin-bottom: 0.7rem;
+.duration {
+    display: none;
+    font-size: 0.875em;
+    font-weight: normal;
+    color: #888888;
 }
 
 
@@ -141,7 +146,7 @@ details[open] > summary > ::before {
 header {
     background-color: #455A64;
     color: white;
-    padding: 0.7rem 0;
+    padding: 1rem 0;
 }
 
 h1 {
@@ -149,16 +154,12 @@ h1 {
 }
 
 section {
-    padding: 0.7rem 0;
+    padding: 0.75rem 0;
 }
 
 /**********************************************
  SUMMARY
 **********************************************/
-
-#summary {
-    background-color: #ECEFF1;
-}
 
 @media only screen and (min-width: 1024px) {
     #summary > .container {
@@ -178,7 +179,7 @@ section {
 
 .metadata th {
     font-weight: bold;
-    padding-right: 0.7rem;
+    padding-right: 0.75rem;
 }
 
 .metadata td {
@@ -188,7 +189,7 @@ section {
 .graph {
     display: grid;
     grid-template-columns: minmax(100px, 250px) auto;
-    grid-gap: 0.7rem;
+    grid-gap: 0.75rem;
     align-items: center;
     justify-content: center;
 }
@@ -200,7 +201,7 @@ section {
 
 .graph svg text {
     font-size: 10px;
-    fill: #333333;
+    fill: #444444;
 }
 
 .legend {
@@ -236,20 +237,32 @@ section {
 #warnings > .container {
     display: grid;
     grid-template-columns: auto 1fr;
-    grid-gap: 0.7rem;
+    grid-gap: 0.75rem;
     align-items: start;
 }
 
 
 /**********************************************
- TESTS
+ MODULES
 **********************************************/
 
 .file-title {
     display: grid;
-    grid-template-columns: auto auto 1fr;
-    grid-gap: 0.7rem;
+    grid-template-columns: auto auto 1fr auto;
+    grid-gap: 0.75rem;
     align-items: center;
+}
+
+.file > summary {
+    padding: 0.4rem 0.5rem;
+}
+
+.file > summary:hover {
+    background-color: rgba(200, 200, 200, 0.2);
+}
+
+.file > .content {
+    margin-bottom: 0.75rem;
 }
 
 @media only print {
@@ -260,7 +273,7 @@ section {
 
 .fspath {
     margin: 0;
-    font-size: 1.1em;
+    font-size: 1.125em;
     word-break: break-all;
 }
 
@@ -270,30 +283,42 @@ section {
 
 .counts > span {
     display: inline-block;
-    margin-right: 0.3em;
+    margin-right: 5px;
 }
 
+
+/**********************************************
+ TESTS
+**********************************************/
+
 .test > summary {
-    border-radius: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100000;
+    /* border-radius: 0; */
+    padding: 0.5rem;
+    padding-left: 0.75rem;
+    background-color: #ffffff;
+}
+
+.test > summary:hover {
+    background-color: #f6f6f6;
 }
 
 .test:not(:last-child) {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #e9e9e9;
+}
+
+.test > .content {
+    padding: 0.75rem;
 }
 
 .test-title {
     display: grid;
     grid-template-columns: auto 5em 1fr auto;
-    grid-gap: 0.7rem;
+    grid-gap: 0.75rem;
     align-items: center;
     /* justify-content: start; */
-}
-
-.duration {
-    display: none;
-    font-size: 85%;
-    font-weight: normal;
-    color: #707070;
 }
 
 @media only screen and (min-width: 500px) {
@@ -306,6 +331,10 @@ section {
     font-size: 1em;
     margin: 0;
     word-break: break-all;
+}
+
+.test-name > .params {
+    font-weight: normal;
 }
 
 .documentation p {
@@ -330,29 +359,41 @@ section {
 
 .test-phases {
     border-left: 2px solid #dddddd;
-    margin-left: 0.7rem;
+    margin-left: 0.75rem;
 }
 
 .phase {
     position: relative;
-    padding-left: 0.7rem;
+    padding-left: 0.9rem;
     margin-bottom: 0;
     border-radius: 0;
+}
+
+.phase > summary {
+    padding: 0.4rem;
+    /* margin-left: 0.2rem; */
+}
+
+.phase > summary:hover {
+    background-color: #f6f6f6;
+}
+
+.phase > .content {
+    /* padding-left: 0.2rem; */
 }
 
 .phase .status {
     position: absolute;
     display: inline-block;
     left: -1px;
-    margin-top: -0.3em;
+    margin-top: -0.4rem;
     padding: 0;
     transform: translateX(-50%);
-    width: 1.4em;
-    height: 1.4em;
+    width: 1.5rem;
+    height: 1.5rem;
     text-align: center;
     border-radius: 500%;
-    border: 2px solid white;
-    background-color: #cccccc;
+    border: 3px solid white;
     background-size: 50%;
     background-repeat: no-repeat;
     background-position: center;
@@ -391,7 +432,8 @@ section {
 **********************************************/
 
 footer {
-    font-size: 85%;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
     font-style: italic;
     color: #999999;
     text-align: right;

@@ -1,17 +1,17 @@
 <svg width="200" height="200" viewBox="0 0 42 42">
-  {% set ns = namespace(sum=0) %}
+  {% set ns = namespace(sum=0.0) %}
   {% set total = tests|count %}
   {% set r = 16 %}
   {% set spacing = 0.5 %}
-  {% set C = 2 * 3.14159 * r %}
+  {% set C = 2 * 3.141592653589793 * r %}
   {% for category, sub_tests in tests|groupby('status.category') %}
     {% set count = sub_tests|count %}
     {% set L = count / total * C %}
     {% set color = colors[category] %}
     <circle
       class="donut-segment {{ category }}"
-      stroke-dasharray="{{ L - spacing }} {{ C - L + spacing }}"
-      stroke-dashoffset="{{ C - ns.sum + (C / 4) }}"
+      stroke-dasharray="{{ [L - spacing, 0]|max }} {{ C - (L - spacing) }}"
+      stroke-dashoffset="{{ C - ns.sum + C / 4 - spacing / 2 }}"
       cx="21"
       cy="21"
       r="{{ r }}"
@@ -23,5 +23,5 @@
     </circle>
     {% set ns.sum = ns.sum + L %}
   {% endfor %}
-  <text x="21" y="25" text-anchor="middle">{{ total }}</text>
+  <text x="21" y="24" text-anchor="middle">{{ total }}</text>
 </svg>

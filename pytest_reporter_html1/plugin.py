@@ -27,14 +27,14 @@ COLORS = {
     "passed": ("#43A047", "#FFFFFF"),
     "failed": ("#F44336", "#FFFFFF"),
     "error": ("#B71C1C", "#FFFFFF"),
-    "xfailed": ("#EF9A9A", "#333333"),
-    "xpassed": ("#A5D6A7", "#333333"),
+    "xfailed": ("#EF9A9A", "#222222"),
+    "xpassed": ("#A5D6A7", "#222222"),
     "skipped": ("#9E9E9E", "#FFFFFF"),
-    "rerun": ("#FBC02D", "#333333"),
-    "warning": ("#FBC02D", "#333333"),
+    "rerun": ("#FBC02D", "#222222"),
+    "warning": ("#FBC02D", "#222222"),
     "green": ("#43A047", "#FFFFFF"),
     "red": ("#E53935", "#FFFFFF"),
-    "yellow": ("#FBC02D", "#333333"),
+    "yellow": ("#FBC02D", "#222222"),
 }
 
 

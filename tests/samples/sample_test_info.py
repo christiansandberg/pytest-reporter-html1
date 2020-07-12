@@ -1,9 +1,9 @@
 import pytest
 
 
-@pytest.mark.parametrize("i", range(3))
-def test_parametrized(i):
-    assert i < 2
+@pytest.mark.parametrize("parameter", ["one", "two", "three"])
+def test_parametrized(parameter):
+    assert parameter != "three"
 
 
 @pytest.mark.mark1
