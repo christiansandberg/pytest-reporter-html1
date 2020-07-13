@@ -12,9 +12,9 @@ function init() {
             //     Array.prototype.forEach.call(selectElements, function(el) {
             //         el.classList.add("hidden");
             //     });
-            //     Array.prototype.forEach.call(categoryElements, function(el) {
-            //         el.classList.add("hidden");
-            //     });
+            //     // Array.prototype.forEach.call(categoryElements, function(el) {
+            //     //     el.classList.add("hidden");
+            //     // });
             // }
 
             var hidden = el.classList.toggle("hidden");

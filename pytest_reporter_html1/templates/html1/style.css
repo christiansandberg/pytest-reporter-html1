@@ -221,6 +221,10 @@ section {
     opacity: 0.3;
 }
 
+.donut-segment.hidden {
+    stroke-width: 2;
+}
+
 .test.hidden {
     display: none;
 }
