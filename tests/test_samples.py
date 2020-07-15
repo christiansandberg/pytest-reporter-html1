@@ -15,12 +15,18 @@ def test_sample_report(testdir, pytestconfig):
         "   mark_with_args",
     ])
     testdir.copy_example("samples")
+    testdir.copy_example("../screenshot.png")
 
     report = "{}/report/report.html".format(pytestconfig.rootdir)
     result = testdir.runpytest(
         "--log-level=DEBUG",
         "--template=html1/index.html",
         "--report=" + report
+    )
+    testdir.runpytest(
+        "--template=html1/index.html",
+        "--split-report",
+        "--report={}/report/split_report.html".format(pytestconfig.rootdir)
     )
     assert result.ret == 1
     with open(report) as fp:

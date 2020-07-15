@@ -80,6 +80,32 @@
             </td>
           </tr>
         {% endif %}
+        {% for phase in test.phases %}
+          {% for extra in phase.report.extra|default([]) %}
+            <tr class="extra extra-{{ extra.format }}">
+              <th>{{ extra.name }}</th>
+              <td>
+                {% if extra.format == 'image' %}
+                  <img src="{{ extra.content|asset(extra.extension) }}" alt="{{ extra.name }}">
+                {% elif extra.format == 'video' %}
+                  <video controls>
+                    <source src="{{ extra.content|asset(extra.extension) }}" type="{{ extra.mime_type }}">
+                  </video>
+                {% elif extra.format == 'html' %}
+                  {{ extra.content|safe }}
+                {% elif extra.format == 'text' %}
+                  <pre>{{ extra.content|escape }}</pre>
+                {% elif extra.format == 'json' %}
+                  <pre>{{ extra.content|json|escape }}</pre>
+                {% elif extra.format == 'url' %}
+                  {{ extra.content|urlize }}
+                {% else %}
+                  ?
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
         {% endblock %}
       </table>
       {% for phase in test.phases if phase.call.excinfo %}

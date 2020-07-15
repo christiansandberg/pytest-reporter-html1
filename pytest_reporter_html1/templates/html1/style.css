@@ -35,16 +35,19 @@ pre {
     overflow-x: auto;
     background-color: #f3f3f3;
     font-size: 87.5%;
-    white-space: pre-wrap;
-    word-wrap: break-word;
     padding: 0.75rem;
     margin: 0.75rem 0;
     border: 1px solid #c7c7c7;
     border-radius: 4px;
 }
 
+samp {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 @media only screen and (max-width: 768px) {
-    pre {
+    samp {
         white-space: normal;
         word-wrap: normal;
     }
@@ -332,6 +335,21 @@ section {
 
 .fixturename {
     margin: 0 0.2rem 0.2rem 0;
+}
+
+td > pre {
+    margin: 0;
+}
+
+.extra img,
+.extra video {
+    max-height: 300px;
+}
+
+.extra pre {
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 

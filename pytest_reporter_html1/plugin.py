@@ -1,7 +1,9 @@
+import hashlib
+import json
 import mimetypes
 import re
 import shutil
-from base64 import b64encode
+from base64 import b64encode, b64decode
 from datetime import datetime, timedelta
 from inspect import cleandoc
 from pathlib import Path
@@ -58,6 +60,7 @@ def css_minify(s):
 
 
 class TemplatePlugin:
+
     def __init__(self, config):
         self.self_contained = not config.getoption("--split-report")
         self._css = None
@@ -83,6 +86,7 @@ class TemplatePlugin:
         env.filters["ansi"] = lambda s: conv.convert(s, full=False)
         env.filters["cleandoc"] = cleandoc
         env.filters["rst"] = lambda s: publish_parts(source=s, writer_name="html5")["body"]
+        env.filters["json"] = lambda d: json.dumps(d, indent=2)
         env.filters["css_minify"] = css_minify
         return env
 
@@ -95,27 +99,71 @@ class TemplatePlugin:
             return Markup("<style>") + css + Markup("</style>")
         else:
             self._css = css
-            return Markup('<link rel="stylesheet" type="text/css" href="html1.css">')
+            return Markup('<link rel="stylesheet" type="text/css" href="style.css">')
 
-    def _assetfilter(self, src):
+    def _assetfilter(self, src, extension=None, inline=None):
         path = None
-        for parent in [".", *self._dirs]:
-            maybe_file = Path(parent) / src
-            if maybe_file.is_file():
-                path = maybe_file
-                break
-        if not path:
-            warnings.warn("Could not find file '%s'" % src)
+        b64_content = None
+        raw_content = None
+        if inline is None:
+            inline = self.self_contained
+
+        if isinstance(src, bytes):
+            raw_content = src
+        elif len(src) > 255:
+            # Probably not a path
+            b64_content = src
+        else:
+            try:
+                for parent in [".", *self._dirs]:
+                    maybe_file = Path(parent) / src
+                    if maybe_file.is_file():
+                        path = maybe_file
+                        break
+                else:
+                    b64_content = src
+            except ValueError:
+                b64_content = src
+
+        if not path and not b64_content and not raw_content:
+            warnings.warn("Could not find file")
             path = src
 
-        if self.self_contained:
-            mimetype, _ = mimetypes.guess_type(src)
-            content = path.read_bytes()
-            return "data:" + mimetype + ";base64," + b64encode(content).decode("utf-8")
+        if inline:
+            if path:
+                fname = str(path)
+            elif extension:
+                fname = "temp." + extension
+            mimetype, _ = mimetypes.guess_type(fname)
+            if not mimetype:
+                mimetype = "application/octet-stream"
+            if path:
+                raw_content = path.read_bytes()
+            if raw_content:
+                b64_content = b64encode(raw_content).decode("utf-8")
+            return "data:" + mimetype + ";base64," + b64_content
         else:
-            self._assets.append(path)
-            # Put all assets in the same directory as the HTML and CSS
-            return path.name
+            m = hashlib.sha1()
+            if path:
+                with path.open("rb") as fp:
+                    while True:
+                        data = fp.read(16384)
+                        if not data:
+                            break
+                        m.update(data)
+                content = path
+            if b64_content:
+                raw_content = b64decode(b64_content.encode("utf-8"))
+            if raw_content:
+                m.update(raw_content)
+                content = raw_content
+            if extension:
+                suffix = "." + extension
+            else:
+                suffix = path.suffix
+            fname = m.hexdigest() + suffix
+            self._assets.append((fname, content))
+            return "assets/" + fname
 
     def pytest_reporter_render(self, template_name, dirs, context):
         try:
@@ -127,10 +175,15 @@ class TemplatePlugin:
         return minified
 
     def pytest_reporter_finish(self, path, context, config):
-        assets = path.parent
-        # assets.mkdir(parents=True, exist_ok=True)
+        assets = path.parent / "assets"
+        if not self.self_contained:
+            assets.mkdir(parents=True, exist_ok=True)
         if self._css:
-            style_css = assets / "html1.css"
+            style_css = path.parent / "style.css"
             style_css.write_text(self._css)
-        for asset in self._assets:
-            shutil.copy(asset, assets)
+        for fname, content in self._assets:
+            if isinstance(content, bytes):
+                with open(assets / fname, "wb") as fp:
+                    fp.write(content)
+            else:
+                shutil.copy(content, assets / fname)
