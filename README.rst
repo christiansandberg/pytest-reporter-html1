@@ -6,7 +6,7 @@ pytest-reporter-html1
     :target: https://pypi.org/project/pytest-reporter-html1
     :alt: PyPI version
 
-A basic HTML report for Pytest using `Jinja2`_ template engine.
+A basic HTML report for `pytest`_ using `Jinja2`_ template engine.
 
 
 Features
@@ -16,7 +16,7 @@ Features
 * Fairly mobile friendly
 * Complies with Jenkins default CSP policy (with ``--split-report``)
 * reStructuredText support in test function documentation
-* Support for pytest-metadata and pytest-rerunfailures
+* Support for `pytest-metadata`_ and `pytest-rerunfailures`_
 * May be used as a base template for customization
 
 .. image:: https://raw.githubusercontent.com/christiansandberg/pytest-reporter-html1/master/screenshot.png
@@ -100,6 +100,8 @@ If you encounter any problems, please `file an issue`_ along with a detailed des
 .. _`template inheritance`: https://jinja.palletsprojects.com/en/master/templates/#template-inheritance
 .. _`file an issue`: https://github.com/christiansandberg/pytest-reporter/issues
 .. _`pytest`: https://github.com/pytest-dev/pytest
+.. _`pytest-metadata`: https://github.com/pytest-dev/pytest-metadata
+.. _`pytest-rerunfailures`: https://github.com/pytest-dev/pytest-rerunfailures
 .. _`pip`: https://pypi.org/project/pip/
 .. _`PyPI`: https://pypi.org/project
 .. _`datetime.strftime`: https://docs.python.org/3/library/datetime.html#datetime.datetime.strftime
