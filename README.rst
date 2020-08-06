@@ -7,6 +7,7 @@ pytest-reporter-html1
     :alt: PyPI version
 
 A basic HTML report for `pytest`_ using `Jinja2`_ template engine.
+Based on `pytest-reporter`_ which provides the data to the template.
 
 
 Features
@@ -56,20 +57,19 @@ It defines various blocks which you can override using `template inheritance`_.
         header {
             background-color: black;
         }
-        body {
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-        }
     {% endblock %}
 
 Some additional filters are available for templates to use:
 
-``asset(path)``
-    Takes a path to a local file and either returns a base64 encoded URL or a
-    new relative URL to a copy depending on if the report is self-contained or not.
+``asset(path_or_content, extension)``
+    Takes a path to a local file or a raw bytes object and either returns a
+    base64 encoded URL or a new relative URL to a copy depending on if the
+    report is self-contained or not.
 
     .. code:: html
 
-        <img src="{{ 'temporary_path/image.png'|asset }}">
+        <img src="{{ 'path/to/image.png'|asset }}">
+        <img src="{{ raw_byte_data|asset('png') }}">
 
 ``ansi(s)``
     Convert ANSI color codes to HTML.
@@ -84,9 +84,6 @@ Some additional filters are available for templates to use:
 ``timedelta(value)``
     Convert a time in seconds to a `timedelta`_ object.
 
-``cleandoc(s)``
-    Clean docstring using `inspect.cleandoc`_.
-
 ``rst(s)``
     Convert reStructuredText to HTML.
 
@@ -98,12 +95,12 @@ If you encounter any problems, please `file an issue`_ along with a detailed des
 
 .. _`Jinja2`: https://jinja.palletsprojects.com/
 .. _`template inheritance`: https://jinja.palletsprojects.com/en/master/templates/#template-inheritance
-.. _`file an issue`: https://github.com/christiansandberg/pytest-reporter/issues
+.. _`file an issue`: https://github.com/christiansandberg/pytest-reporter-html1/issues
 .. _`pytest`: https://github.com/pytest-dev/pytest
+.. _`pytest-reporter`: https://github.com/christiansandberg/pytest-reporter
 .. _`pytest-metadata`: https://github.com/pytest-dev/pytest-metadata
 .. _`pytest-rerunfailures`: https://github.com/pytest-dev/pytest-rerunfailures
 .. _`pip`: https://pypi.org/project/pip/
 .. _`PyPI`: https://pypi.org/project
 .. _`datetime.strftime`: https://docs.python.org/3/library/datetime.html#datetime.datetime.strftime
 .. _`timedelta`: https://docs.python.org/3/library/datetime.html#timedelta-objects
-.. _`inspect.cleandoc`: https://docs.python.org/3/library/inspect.html#inspect.cleandoc
