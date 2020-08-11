@@ -7,7 +7,7 @@ def broken():
 
 
 def test_failed():
-    assert False
+    assert "1" not in "123"
 
 
 def test_passed():
