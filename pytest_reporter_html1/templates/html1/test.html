@@ -1,0 +1,129 @@
+{% block test_content scoped %}
+{% if test.item.function.__doc__ %}
+<div class="documentation">
+  {{ test.item.function.__doc__|cleandoc|rst|safe }}
+</div>
+{% endif %}
+<table class="metadata">
+{% block test_metadata scoped %}
+<tr>
+  <th>Started</th>
+  <td>{{ test.phases|map(attribute='call.start')|first|strftime(time_format) }}</td>
+</tr>
+<tr>
+  <th>Ended</th>
+  <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime(time_format) }}</td>
+</tr>
+<tr>
+  <th>Duration</th>
+  <td>{{ test.phases|sum(attribute='report.duration')|timedelta }}</td>
+</tr>
+{% for name, value in test.item.user_properties %}
+  <tr>
+    <th>{{ name|title }}</th>
+    <td>{{ value|escape|urlize }}</td>
+  </tr>
+{% endfor %}
+{% set markers = test.item.iter_markers()|rejectattr('name', '==', 'parametrize')|list %}
+{% if markers %}
+  <tr>
+    <th>Markers</th>
+    <td>
+      {% for marker in markers %}
+        <div class="marker">
+          <span class="marker-name badge">{{ marker.name }}</span>
+          <span class="marker-args">
+            {% for value in marker.args %}
+              {{ value|repr }}
+            {% endfor %}
+
+            {% for key, value in marker.kwargs.items() %}
+              {{ key }}={{ value|repr }}
+            {% endfor %}
+          </span>
+        </div>
+      {% endfor %}
+    </td>
+  </tr>
+{% endif %}
+{% if test.item.fixturenames %}
+  <tr>
+    <th>Fixtures</th>
+    <td>
+      {% for fixturename in test.item.fixturenames if not fixturename.startswith('_') %}
+        <span class="badge fixturename">
+          {{ fixturename }}
+        </span>
+      {% endfor %}
+    </td>
+  </tr>
+{% endif %}
+{% for phase in test.phases %}
+  {% for extra in phase.report.extra|default([]) %}
+    <tr class="extra extra-{{ extra.format }}">
+      <th>{{ extra.name }}</th>
+      <td>
+        {% if extra.format == 'image' %}
+          <img src="{{ extra.content|asset(extra.extension) }}" alt="{{ extra.name }}">
+        {% elif extra.format == 'video' %}
+          <video controls>
+            <source src="{{ extra.content|asset(extra.extension) }}" type="{{ extra.mime_type }}">
+          </video>
+        {% elif extra.format == 'html' %}
+          {{ extra.content|safe }}
+        {% elif extra.format == 'text' %}
+          <pre>{{ extra.content|escape }}</pre>
+        {% elif extra.format == 'json' %}
+          <pre>{{ extra.content|json|escape }}</pre>
+        {% elif extra.format == 'url' %}
+          {{ extra.content|urlize }}
+        {% else %}
+          ?
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+{% endfor %}
+{% endblock %}
+</table>
+{% for phase in test.phases if phase.call.excinfo %}
+<div class="repr">
+  <pre>{{ phase.call.excinfo.exconly(tryshort=True) }}</pre>
+</div>
+{% endfor %}
+<div class="test-phases">
+{% for phase in test.phases %}
+  <details class="phase {{ phase.report.when }} {{ phase.status.category }}" {{ 'open' if phase.status.category }}>
+    <summary>
+      <div class="title">
+        {% if phase.status.category %}
+          <div class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></div>
+        {% endif %}
+        <h4 class="phase-name">{{ phase.report.when|title }}</h4>
+      </div>
+    </summary>
+    <div class="content">
+      {% if phase.report.longrepr %}
+        <div class="repr">
+          <pre>{{ phase.report.longreprtext }}</pre>
+        </div>
+      {% endif %}
+      {% for section, content in phase.report.sections %}
+        {#
+          Need to remember which sections have already been reported as
+          all previous sections for a single item get included in the next call.
+        #}
+        {% set section_id = content|id %}
+        {% if section_id not in ns.used_sections %}
+          {% set ns.used_sections = ns.used_sections + [section_id] %}
+          <div class="section">
+            <h5 class="section-title">{{ section }}</h5>
+            <pre><samp>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</samp></pre>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </details>
+{% endfor %}
+</div>
+{% endblock %}
