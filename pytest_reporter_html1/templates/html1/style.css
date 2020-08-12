@@ -31,6 +31,14 @@ body {
     }
 }
 
+section {
+    padding: 0.75rem 0;
+}
+
+h1 {
+    display: none;
+}
+
 pre {
     overflow-x: auto;
     background-color: #f3f3f3;
@@ -112,7 +120,7 @@ details > summary::-webkit-details-marker {
     display: none;
 }
 
-.title::before {
+details > summary > ::before {
     content: " ";
     background-image: url("{{ 'html1/icons/arrow.svg'|asset }}");
     background-size: contain;
@@ -126,8 +134,14 @@ details > summary::-webkit-details-marker {
     transition: transform ease-out 0.2s;
 }
 
-details[open] > summary > ::before {
+details[open] > summary > .title::before {
     transform: rotate(90deg);
+}
+
+.title {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
 }
 
 .duration {
@@ -148,13 +162,11 @@ header {
     padding: 1rem 0;
 }
 
-h1 {
-    margin: 0;
+.report-title {
+    font-weight: bold;
+    font-size: 2rem;
 }
 
-section {
-    padding: 0.75rem 0;
-}
 
 /**********************************************
  SUMMARY
@@ -376,10 +388,6 @@ td > pre {
 
 .phase > summary:hover {
     background-color: #f6f6f6;
-}
-
-.phase > .content {
-    /* padding-left: 0.2rem; */
 }
 
 .phase .status {

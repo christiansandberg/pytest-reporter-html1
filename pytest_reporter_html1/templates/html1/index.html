@@ -2,6 +2,7 @@
 {% block content %}
 <section id="summary">
   <div class="container">
+    <h1>Summary</h1>
     {% block summary %}
     <div class="metadata">
       <table>
@@ -63,6 +64,7 @@
 {% if warnings %}
   <section id="warnings">
     <div class="container">
+      <h1>Warnings</h1>
       {% for warning in warnings %}
         <div class="status badge warning">WARNING</div>
         <div>{{ warning.filename }}:{{ warning.lineno }}<br>{{ warning.message }}</div>
@@ -72,27 +74,28 @@
 {% endif %}
 <section id="test-files">
   <div class="container">
+    <h1>Tests</h1>
     {% for fspath, tests in tests|groupby('item.fspath') %}
       {% set first_item = tests|map(attribute='item')|first %}
       <details class="file">
         <summary>
-          <div class="title file-title">
+          <h2 class="title file-title">
             {% block module_title scoped %}
-            <h2 class="fspath">
+            <span class="fspath">
               {% block module_name scoped %}
               {{ first_item.nodeid.split('::')|first }}
               {% endblock %}
-            </h2>
-            <div class="counts">
+            </span>
+            <span class="counts">
             {% for category, tests in tests|groupby('status.category') -%}
               <span title="{{ tests|count }} {{ category }}" class="count status badge {{ category }} {{ tests|map(attribute='status.style')|first|join(' ') }}">{{ tests|count }}</span>
             {%- endfor %}
-            </div>
-            <div class="duration">
+            </span>
+            <span class="duration">
               {{ tests|map(attribute='phases')|map('sum', 'report.duration')|sum|timedelta }}
-            </div>
+            </span>
             {% endblock %}
-          </div>
+          </h2>
         </summary>
         <div class="content box">
           {% include "html1/module.html" %}

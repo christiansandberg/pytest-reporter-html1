@@ -95,12 +95,12 @@
 {% for phase in test.phases %}
   <details class="phase {{ phase.report.when }} {{ phase.status.category }}" {{ 'open' if phase.status.category }}>
     <summary>
-      <div class="title">
+      <h4 class="title">
         {% if phase.status.category %}
-          <div class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></div>
+          <span class="status {{ phase.status.style|join(' ') }} {{ phase.status.category }}"></span>
         {% endif %}
-        <h4 class="phase-name">{{ phase.report.when|title }}</h4>
-      </div>
+        <span class="phase-name">{{ phase.report.when|title }}</span>
+      </h4>
     </summary>
     <div class="content">
       {% if phase.report.longrepr %}

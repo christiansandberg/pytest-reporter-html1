@@ -14,7 +14,6 @@
       {% endblock %}
     {% endfilter %}
   {% endfilter %}
-  </style>
   <script>
     {% block script %}
     {% endblock %}
@@ -25,7 +24,7 @@
   <header>
     {% block header %}
     <div class="container">
-      <h1>{{ title|default('Test Report') }}</h1>
+      <span class="report-title">{{ title|default('Test Report') }}</span>
     </div>
     {% endblock %}
   </header>
