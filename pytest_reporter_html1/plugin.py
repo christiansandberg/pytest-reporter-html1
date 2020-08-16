@@ -1,5 +1,5 @@
 import hashlib
-import json
+import itertools
 import mimetypes
 import re
 import shutil
@@ -17,6 +17,7 @@ from jinja2 import (
     Environment,
     FileSystemLoader,
     TemplateNotFound,
+    ChainableUndefined,
     Markup,
     select_autoescape,
 )
@@ -73,6 +74,7 @@ class TemplatePlugin:
         self.env = env = Environment(
             loader=FileSystemLoader(self._dirs),
             autoescape=select_autoescape(["html", "htm", "xml"]),
+            undefined=ChainableUndefined,
         )
         env.globals["get_ansi_styles"] = get_styles
         env.globals["self_contained"] = self.self_contained
@@ -80,13 +82,12 @@ class TemplatePlugin:
         env.filters["css"] = self._cssfilter
         env.filters["asset"] = self._assetfilter
         env.filters["repr"] = repr
-        env.filters["id"] = id
+        env.filters["chain"] = itertools.chain.from_iterable
         env.filters["strftime"] = lambda ts, fmt: datetime.fromtimestamp(ts).strftime(fmt)
         env.filters["timedelta"] = lambda ts: timedelta(seconds=ts)
         env.filters["ansi"] = lambda s: conv.convert(s, full=False)
         env.filters["cleandoc"] = cleandoc
         env.filters["rst"] = lambda s: publish_parts(source=s, writer_name="html5")["body"]
-        env.filters["json"] = lambda d: json.dumps(d, indent=2)
         env.filters["css_minify"] = css_minify
         return env
 

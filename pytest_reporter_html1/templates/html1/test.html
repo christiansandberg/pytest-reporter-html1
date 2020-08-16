@@ -18,12 +18,13 @@
   <th>Duration</th>
   <td>{{ test.phases|sum(attribute='report.duration')|timedelta }}</td>
 </tr>
-{% for name, value in test.item.user_properties %}
+{% for name, value in test.phases|map(attribute='report.user_properties')|chain|unique %}
   <tr>
     <th>{{ name|title }}</th>
     <td>{{ value|escape|urlize }}</td>
   </tr>
 {% endfor %}
+{# TODO: Use keywords from TestReport to support dynamically added markers with xdist #}
 {% set markers = test.item.iter_markers()|rejectattr('name', '==', 'parametrize')|list %}
 {% if markers %}
   <tr>
@@ -74,7 +75,7 @@
         {% elif extra.format == 'text' %}
           <pre>{{ extra.content|escape }}</pre>
         {% elif extra.format == 'json' %}
-          <pre>{{ extra.content|json|escape }}</pre>
+          <pre>{{ extra.content|tojson(indent=2) }}</pre>
         {% elif extra.format == 'url' %}
           {{ extra.content|urlize }}
         {% else %}
