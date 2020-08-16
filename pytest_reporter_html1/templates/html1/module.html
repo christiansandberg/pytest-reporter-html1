@@ -1,5 +1,4 @@
 {% block module_content scoped %}
-{% set ns = namespace(used_sections=[]) %}
 {% for test in tests %}
   <details class="test {{ test.status.category }}">
     <summary>

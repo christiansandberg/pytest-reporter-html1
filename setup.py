@@ -28,7 +28,7 @@ setup(
     python_requires='>=3.5',
     setup_requires=['setuptools_scm'],
     install_requires=[
-        'pytest-reporter>=0.3.0',
+        'pytest-reporter>=0.4.0',
         'Jinja2',
         'ansi2html>=1.3.0',
         'htmlmin',

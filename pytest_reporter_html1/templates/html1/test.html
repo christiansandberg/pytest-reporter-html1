@@ -8,11 +8,11 @@
 {% block test_metadata scoped %}
 <tr>
   <th>Started</th>
-  <td>{{ test.phases|map(attribute='call.start')|first|strftime(time_format) }}</td>
+  <td>{{ test.started|strftime(time_format) }}</td>
 </tr>
 <tr>
   <th>Ended</th>
-  <td>{{ test.phases|map(attribute='call.stop')|list|last|strftime(time_format) }}</td>
+  <td>{{ test.ended|strftime(time_format) }}</td>
 </tr>
 <tr>
   <th>Duration</th>
@@ -86,10 +86,10 @@
 {% endfor %}
 {% endblock %}
 </table>
-{% for phase in test.phases if phase.call.excinfo %}
-<div class="repr">
-  <pre>{{ phase.call.excinfo.exconly(tryshort=True) }}</pre>
-</div>
+{% for phase in test.phases if phase.report.longrepr and 'call' in phase %}
+  <div class="repr">
+    <pre>{{ phase.call.excinfo.exconly(tryshort=True) }}</pre>
+  </div>
 {% endfor %}
 <div class="test-phases">
 {% for phase in test.phases %}
@@ -108,19 +108,11 @@
           <pre>{{ phase.report.longreprtext }}</pre>
         </div>
       {% endif %}
-      {% for section, content in phase.report.sections %}
-        {#
-          Need to remember which sections have already been reported as
-          all previous sections for a single item get included in the next call.
-        #}
-        {% set section_id = content|id %}
-        {% if section_id not in ns.used_sections %}
-          {% set ns.used_sections = ns.used_sections + [section_id] %}
-          <div class="section">
-            <h5 class="section-title">{{ section }}</h5>
-            <pre><samp>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</samp></pre>
-          </div>
-        {% endif %}
+      {% for section, content in phase.sections %}
+        <div class="section">
+          <h5 class="section-title">{{ section }}</h5>
+          <pre><samp>{{ content|escape|replace('\r\n', '\n')|ansi|safe }}</samp></pre>
+        </div>
       {% endfor %}
     </div>
   </details>
