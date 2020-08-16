@@ -420,6 +420,10 @@ td > pre {
     background-image: url("{{ 'html1/icons/nok.svg'|asset }}");
 }
 
+.phase .status.skipped {
+    background-image: url("{{ 'html1/icons/skip.svg'|asset }}");
+}
+
 .phase-name {
     /* margin-left: 1rem; */
     display: inline-block;
