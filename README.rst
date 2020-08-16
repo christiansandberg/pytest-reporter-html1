@@ -14,9 +14,9 @@ Features
 --------
 
 * Overview of files, tests, and phases with expandable sections
+* Includes information about tests such as documentation, markers, and fixtures
 * Fairly mobile friendly
 * Complies with Jenkins default CSP policy (with ``--split-report``)
-* reStructuredText support in test function documentation
 * Support for `pytest-metadata`_ and `pytest-rerunfailures`_
 * May be used as a base template for customization
 
