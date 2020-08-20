@@ -28,6 +28,10 @@
             <td>{{ duration|timedelta }}</td>
           </tr>
         {% endif %}
+        <tr>
+          <th>Total run time</th>
+          <td>{{ tests|map(attribute='phases')|map('sum', 'report.duration')|sum|timedelta }}</td>
+        </tr>
         {% if config._metadata %}
           {% for key, value in config._metadata.items() %}
             <tr>
