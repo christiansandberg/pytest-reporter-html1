@@ -11,7 +11,8 @@ def test_sample_report(testdir, pytestconfig):
         "[pytest]",
         "python_files=sample_*.py",
         "markers =",
-        "   mark1",
+        "   static_mark",
+        "   dynamic_mark",
         "   mark_with_args",
     ])
     testdir.copy_example("samples")

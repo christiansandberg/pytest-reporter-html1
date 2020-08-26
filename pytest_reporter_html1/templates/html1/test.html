@@ -25,7 +25,7 @@
   </tr>
 {% endfor %}
 {# TODO: Use keywords from TestReport to support dynamically added markers with xdist #}
-{% set markers = test.item.iter_markers()|rejectattr('name', '==', 'parametrize')|list %}
+{% set markers = test.item.iter_markers()|rejectattr('name', '==', 'parametrize')|list|unique(attribute='name') %}
 {% if markers %}
   <tr>
     <th>Markers</th>

@@ -6,9 +6,11 @@ def test_parametrized(parameter):
     assert parameter != "three"
 
 
-@pytest.mark.mark1
+@pytest.mark.static_mark
 @pytest.mark.mark_with_args("positional", keyword=1234)
-def test_markers():
+def test_markers(request):
+    request.applymarker(pytest.mark.static_mark)
+    request.applymarker(pytest.mark.dynamic_mark)
     pass
 
 
