@@ -33,6 +33,7 @@ COLORS = {
     "xfailed": ("#EF9A9A", "#222222"),
     "xpassed": ("#A5D6A7", "#222222"),
     "skipped": ("#9E9E9E", "#FFFFFF"),
+    "notrun": ("#9E9E9E", "#FFFFFF"),
     "rerun": ("#FBC02D", "#222222"),
     "warning": ("#FBC02D", "#222222"),
     "green": ("#43A047", "#FFFFFF"),
