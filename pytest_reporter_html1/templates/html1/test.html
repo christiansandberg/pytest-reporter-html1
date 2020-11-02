@@ -87,7 +87,7 @@
 {% endfor %}
 {% endblock %}
 </table>
-{% for phase in test.phases if phase.report.longrepr and 'call' in phase %}
+{% for phase in test.phases if phase.call and phase.call.excinfo %}
   <div class="repr">
     <pre>{{ phase.call.excinfo.exconly(tryshort=True) }}</pre>
   </div>
