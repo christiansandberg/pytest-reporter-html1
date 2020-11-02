@@ -1,12 +1,22 @@
 import re
 
+import pytest
 from bs4 import BeautifulSoup
 
 
 pytest_plugins = ["pytester"]
 
 
-def test_sample_report(testdir, pytestconfig):
+@pytest.mark.parametrize(
+    "args",
+    [
+        ("report.html", "--log-level=DEBUG"),
+        ("split_report.html", "--split-report"),
+        ("xdist_report.html", "-n", "4"),
+    ],
+    ids=lambda x: x[0],
+)
+def test_sample_report(args, testdir, pytestconfig):
     testdir.makeini([
         "[pytest]",
         "python_files=sample_*.py",
@@ -18,16 +28,11 @@ def test_sample_report(testdir, pytestconfig):
     testdir.copy_example("samples")
     testdir.copy_example("../screenshot.png")
 
-    report = "{}/report/report.html".format(pytestconfig.rootdir)
+    report = "{}/report/{}".format(pytestconfig.rootdir, args[0])
     result = testdir.runpytest(
-        "--log-level=DEBUG",
+        *args[1:],
         "--template=html1/index.html",
         "--report=" + report
-    )
-    testdir.runpytest(
-        "--template=html1/index.html",
-        "--split-report",
-        "--report={}/report/split_report.html".format(pytestconfig.rootdir)
     )
     assert result.ret == 1
     with open(report) as fp:
