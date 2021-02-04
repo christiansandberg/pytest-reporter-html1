@@ -20,7 +20,7 @@
 </tr>
 {% for name, value in test.phases|map(attribute='report.user_properties')|chain|unique %}
   <tr>
-    <th>{{ name|title }}</th>
+    <th>{{ name }}</th>
     <td>{{ value|escape|urlize }}</td>
   </tr>
 {% endfor %}
