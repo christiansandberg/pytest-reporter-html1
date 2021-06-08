@@ -18,9 +18,9 @@ from jinja2 import (
     FileSystemLoader,
     TemplateNotFound,
     ChainableUndefined,
-    Markup,
     select_autoescape,
 )
+from markupsafe import Markup
 
 from . import __version__
 
