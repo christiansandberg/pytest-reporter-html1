@@ -95,6 +95,12 @@ class TemplatePlugin:
     def pytest_reporter_context(self, context, config):
         context.setdefault("colors", COLORS)
         context.setdefault("time_format", "%Y-%m-%d %H:%M:%S")
+        metadata = context.setdefault("metadata", {})
+
+        if config.pluginmanager.getplugin("metadata"):
+            from pytest_metadata.plugin import metadata_key
+
+            metadata.update(config.stash[metadata_key])
 
     def _cssfilter(self, css):
         if self.self_contained:
