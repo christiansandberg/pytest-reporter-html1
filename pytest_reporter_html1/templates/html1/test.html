@@ -89,7 +89,7 @@
 </table>
 {% for phase in test.phases if phase.call and phase.call.excinfo %}
   <div class="repr">
-    <pre>{{ phase.call.excinfo.exconly(tryshort=True) }}</pre>
+    <pre><samp>{{ phase.call.excinfo.exconly(tryshort=True)|ansi|safe }}</samp></pre>
   </div>
 {% endfor %}
 <div class="test-phases">
