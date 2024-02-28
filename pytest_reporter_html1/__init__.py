@@ -1,9 +1,8 @@
-from pkg_resources import get_distribution, DistributionNotFound
-
+from importlib.metadata import version
 
 try:
-    __version__ = get_distribution(__name__).version
-except DistributionNotFound:
+    __version__ = version("pytest-reporter-html1")
+except Exception:
     # package is not installed
     __version__ = "unknown"
 
