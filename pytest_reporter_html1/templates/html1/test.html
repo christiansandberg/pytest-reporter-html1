@@ -106,7 +106,7 @@
     <div class="content">
       {% if phase.report.longrepr %}
         <div class="repr">
-          <pre>{{ phase.report.longreprtext }}</pre>
+          <pre><samp>{{ phase.report.longreprtext|ansi|safe }}</samp></pre>
         </div>
       {% endif %}
       {% for section, content in phase.sections %}
