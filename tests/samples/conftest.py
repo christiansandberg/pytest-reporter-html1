@@ -58,4 +58,4 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
     if report.when == 'call' and item.name == 'test_with_extras':
-        report.extra = EXTRAS
+        report.extras = EXTRAS
