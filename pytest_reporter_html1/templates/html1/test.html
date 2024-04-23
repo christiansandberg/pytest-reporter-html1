@@ -60,7 +60,7 @@
   </tr>
 {% endif %}
 {% for phase in test.phases %}
-  {% for extra in phase.report.extra|default([]) %}
+  {% for extra in phase.report.extras|default([]) %}
     <tr class="extra extra-{{ extra.format }}">
       <th>{{ extra.name }}</th>
       <td>
