@@ -97,15 +97,22 @@
   </div>
 </section>
 {% if warnings %}
+  {% block warning %}
   <section id="warnings">
     <div class="container">
       <h1>Warnings</h1>
+      <details class="file">
+        <summary>
+          <h2 class="title file-title">WARNINGS</h2>      
+        </summary>
       {% for warning in warnings %}
         <div class="status badge warning">WARNING</div>
         <div>{{ warning.filename }}:{{ warning.lineno }}<br>{{ warning.message }}</div>
       {% endfor %}
+      </details>
     </div>
   </section>
+  {% endblock %}
 {% endif %}
 <section id="test-files">
   <div class="container">
