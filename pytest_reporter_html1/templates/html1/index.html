@@ -96,17 +96,44 @@
     {% endblock %}
   </div>
 </section>
+
 {% if warnings %}
+  {% block warning %}
   <section id="warnings">
     <div class="container">
       <h1>Warnings</h1>
-      {% for warning in warnings %}
-        <div class="status badge warning">WARNING</div>
-        <div>{{ warning.filename }}:{{ warning.lineno }}<br>{{ warning.message }}</div>
-      {% endfor %}
+
+      <details class="file">
+
+        <summary>
+          <h2 class="title file-title">
+            <span class="fspath"> WARNINGS </span>
+            <span class="counts">
+              <span title="{{ warnings|count }}"
+                    class="status badge warning">
+                {{ warnings|count }}
+              </span>
+            </span>
+          </h2>    
+        </summary>
+
+        <ul>
+        {% for warning in warnings %}
+          <li>
+            <p><span class="status badge warning">{{ warning.category | replace("<class '", "") | replace("'>", "") }}</span>
+               <span>{{ warning.filename }}:{{ warning.lineno }}</span></p>
+            <p>{{ warning.message }}</p>
+          </li>
+        {% endfor %}
+        </ul>
+        
+      </details>
+
     </div>
   </section>
+  {% endblock %}
 {% endif %}
+
 <section id="test-files">
   <div class="container">
     <h1>Tests</h1>
