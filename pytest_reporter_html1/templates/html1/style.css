@@ -234,6 +234,16 @@ header {
     align-items: start;
 }
 
+#warnings li {
+    margin-bottom: 12px;
+}
+
+#warnings li p {
+    margin-top: 0px;
+    margin-bottom: 2px;
+    display: flex;
+    gap: 10px;
+}
 
 /**********************************************
  MODULES
