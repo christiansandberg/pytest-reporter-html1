@@ -98,8 +98,8 @@
 </section>
 
 {% if warnings %}
-  {% block warning %}
   <section id="warnings">
+    {% block warnings %}
     <div class="container">
       <h1>Warnings</h1>
 
@@ -107,10 +107,9 @@
 
         <summary>
           <h2 class="title file-title">
-            <span class="fspath"> WARNINGS </span>
+            <span class="fspath">Warnings</span>
             <span class="counts">
-              <span title="{{ warnings|count }}"
-                    class="status badge warning">
+              <span class="status badge warning">
                 {{ warnings|count }}
               </span>
             </span>
@@ -120,9 +119,12 @@
         <ul>
         {% for warning in warnings %}
           <li>
-            <p><span class="status badge warning">{{ warning.category | replace("<class '", "") | replace("'>", "") }}</span>
-               <span>{{ warning.filename }}:{{ warning.lineno }}</span></p>
-            <p>{{ warning.message }}</p>
+            <span class="status badge warning">{{ warning.category.__name__ }}</span>
+            <span>
+              <span>{{ warning.message }}</span>
+              <br>
+              <span class="filename">{{ warning.filename }}:{{ warning.lineno }}</span>
+            </span>
           </li>
         {% endfor %}
         </ul>
@@ -130,8 +132,8 @@
       </details>
 
     </div>
-  </section>
   {% endblock %}
+  </section>
 {% endif %}
 
 <section id="test-files">
