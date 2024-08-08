@@ -1,5 +1,5 @@
 {% block test_content scoped %}
-{% if test.item.function.__doc__ %}
+{% if test.item.function and test.item.function.__doc__ %}
 <div class="documentation">
   {{ test.item.function.__doc__|cleandoc|rst|safe }}
 </div>

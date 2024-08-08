@@ -1,0 +1,4 @@
+hello this is a doctest
+>>> x = 3
+>>> x
+4
