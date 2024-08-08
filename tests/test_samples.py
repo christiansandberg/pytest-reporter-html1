@@ -31,6 +31,7 @@ def test_sample_report(args, testdir, pytestconfig):
     report = "{}/report/{}".format(pytestconfig.rootdir, args[0])
     result = testdir.runpytest(
         *args[1:],
+        "--doctest-glob", "sample_*.txt",
         "--template=html1/index.html",
         "--report=" + report
     )
