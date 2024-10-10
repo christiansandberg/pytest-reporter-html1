@@ -31,7 +31,7 @@ setup(
         'pytest-reporter>=0.4.0',
         'Jinja2',
         'ansi2html>=1.3.0',
-        'htmlmin',
+        'htmlmin2',
         'docutils',
     ],
     classifiers=[
