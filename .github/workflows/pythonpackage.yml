@@ -37,7 +37,7 @@ jobs:
       run: |
         pytest tests
     - name: Upload sample report
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: report
         path: tests/report
