@@ -10,44 +10,44 @@ with open(SCREENSHOT_PATH, "rb") as fp:
 EXTRAS = [
     {
         "name": "Local file",
-        "format": "image",
+        "format_type": "image",
         "content": SCREENSHOT_PATH,
     },
     {
         "name": "Raw file",
-        "format": "image",
+        "format_type": "image",
         "content": SCREENSHOT_DATA,
         "extension": "png",
     },
     {
         "name": "Base64 file",
-        "format": "image",
+        "format_type": "image",
         "content": b64encode(SCREENSHOT_DATA).decode("utf-8"),
         "extension": "png",
     },
     {
-        "name": "HTML",
-        "format": "html",
+        "name": None,
+        "format_type": "html",
         "content": "This is some <strong>HTML</strong>!",
     },
     {
         "name": "Text",
-        "format": "text",
+        "format_type": "text",
         "content": "<lorem ipsum> " * 100,
     },
     {
         "name": "URL",
-        "format": "url",
+        "format_type": "url",
         "content": "https://christiansandberg.com/",
     },
     {
         "name": "JSON",
-        "format": "json",
+        "format_type": "json",
         "content": {"content": {"list": [1, 2, 3]}},
     },
     {
         "name": "Unknown",
-        "format": "unknown",
+        "format_type": "unknown",
         "content": "???",
     },
 ]

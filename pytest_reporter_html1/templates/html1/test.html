@@ -62,21 +62,21 @@
 {% for phase in test.phases %}
   {% for extra in phase.report.extras|default([]) %}
     <tr class="extra extra-{{ extra.format }}">
-      <th>{{ extra.name }}</th>
+      <th>{{ extra.name|default('Extra', true) }}</th>
       <td>
-        {% if extra.format == 'image' %}
-          <img src="{{ extra.content|asset(extra.extension) }}" alt="{{ extra.name }}">
-        {% elif extra.format == 'video' %}
+        {% if extra.format_type == 'image' %}
+          <img src="{{ extra.content|asset(extra.extension) }}" alt="{{ extra.name|default('', true) }}">
+        {% elif extra.format_type == 'video' %}
           <video controls>
             <source src="{{ extra.content|asset(extra.extension) }}" type="{{ extra.mime_type }}">
           </video>
-        {% elif extra.format == 'html' %}
+        {% elif extra.format_type == 'html' %}
           {{ extra.content|safe }}
-        {% elif extra.format == 'text' %}
+        {% elif extra.format_type == 'text' %}
           <pre>{{ extra.content|escape }}</pre>
-        {% elif extra.format == 'json' %}
+        {% elif extra.format_type == 'json' %}
           <pre>{{ extra.content|tojson(indent=2) }}</pre>
-        {% elif extra.format == 'url' %}
+        {% elif extra.format_type == 'url' %}
           {{ extra.content|urlize }}
         {% else %}
           ?
