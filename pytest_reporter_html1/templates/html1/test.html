@@ -62,7 +62,7 @@
 {% for phase in test.phases %}
   {% for extra in phase.report.extras|default([]) %}
     <tr class="extra extra-{{ extra.format }}">
-      <th>{{ extra.name|default('Extra', true) }}</th>
+      <th>{{ extra.name|default(extra.format_type, true) }}</th>
       <td>
         {% if extra.format_type == 'image' %}
           <img src="{{ extra.content|asset(extra.extension) }}" alt="{{ extra.name|default('', true) }}">

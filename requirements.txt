@@ -2,4 +2,5 @@ pytest
 pytest-rerunfailures
 pytest-metadata
 pytest-xdist
+pytest-html
 beautifulsoup4
