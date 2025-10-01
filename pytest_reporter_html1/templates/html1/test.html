@@ -89,7 +89,7 @@
 </table>
 {% for phase in test.phases if phase.call and phase.call.excinfo %}
   <div class="repr">
-    <pre><samp>{{ phase.call.excinfo.exconly(tryshort=True)|ansi|safe }}</samp></pre>
+    <pre><samp>{{ phase.call.excinfo.exconly(tryshort=True)|escape|ansi|safe }}</samp></pre>
   </div>
 {% endfor %}
 <div class="test-phases">
@@ -106,7 +106,7 @@
     <div class="content">
       {% if phase.report.longrepr %}
         <div class="repr">
-          <pre><samp>{{ phase.report.longreprtext|ansi|safe }}</samp></pre>
+          <pre><samp>{{ phase.report.longreprtext|escape|ansi|safe }}</samp></pre>
         </div>
       {% endif %}
       {% for section, content in phase.sections %}
