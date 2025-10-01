@@ -88,7 +88,7 @@ class TemplatePlugin:
         env.filters["timedelta"] = lambda ts: timedelta(seconds=ts)
         env.filters["ansi"] = lambda s: conv.convert(s, full=False)
         env.filters["cleandoc"] = cleandoc
-        env.filters["rst"] = lambda s: publish_parts(source=s, writer_name="html5")["body"]
+        env.filters["rst"] = lambda s: publish_parts(source=s, writer="html5")["body"]
         env.filters["css_minify"] = css_minify
         return env
 
