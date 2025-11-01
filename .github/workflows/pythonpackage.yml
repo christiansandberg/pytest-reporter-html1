@@ -37,7 +37,7 @@ jobs:
       run: |
         pytest tests
     - name: Upload sample report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: report-${{ matrix.python-version }}
         path: tests/report
